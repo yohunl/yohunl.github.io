@@ -5,21 +5,21 @@
   
   <title>在github上搭建hexo静态博客 | yohunl&#39;s iOS blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="以下针对的是mac,系统是OS X EI Capitan 10.11.3 ,安装的Node.js是5.5.0,hexo是3.1.1版本,不同的版本可能显示的不一样,或者有一些命令不太一样,如果按照如下教程,需要注意这点.至于git的客户端,假定你机子上已经安装了苹果的xcode,xcode自带了git的命令行了.可使用命令 git –version 来确定机器上是否安装了git本文的csdn链接">
+  <meta name="description" content="hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在github上搭建hexo静态博客">
 <meta property="og:url" content="http://yoursite.com/2016/02/06/在github上搭建hexo静态博客/index.html">
 <meta property="og:site_name" content="yohunl's iOS blog">
-<meta property="og:description" content="以下针对的是mac,系统是OS X EI Capitan 10.11.3 ,安装的Node.js是5.5.0,hexo是3.1.1版本,不同的版本可能显示的不一样,或者有一些命令不太一样,如果按照如下教程,需要注意这点.至于git的客户端,假定你机子上已经安装了苹果的xcode,xcode自带了git的命令行了.可使用命令 git –version 来确定机器上是否安装了git本文的csdn链接">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1552510-0c18166c39cf6081.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1552510-cfc762f96b931816.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1552510-75db9f257db7b024.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1552510-915fd3e5284c4501.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1552510-e73714c80a10e885.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2016-02-06T08:39:35.000Z">
+<meta property="og:description" content="hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer1.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer2.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer3.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer4.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer5.png">
+<meta property="og:updated_time" content="2016-02-07T09:37:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在github上搭建hexo静态博客">
-<meta name="twitter:description" content="以下针对的是mac,系统是OS X EI Capitan 10.11.3 ,安装的Node.js是5.5.0,hexo是3.1.1版本,不同的版本可能显示的不一样,或者有一些命令不太一样,如果按照如下教程,需要注意这点.至于git的客户端,假定你机子上已经安装了苹果的xcode,xcode自带了git的命令行了.可使用命令 git –version 来确定机器上是否安装了git本文的csdn链接">
+<meta name="twitter:description" content="hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上">
   
     <link rel="alternative" href="/atom.xml" title="yohunl&#39;s iOS blog" type="application/atom+xml">
   
@@ -133,6 +133,8 @@
                             
                                 <li id="Email"><a class="Email" target="_blank" href="/yohunl@163.com" title="Email"></a></li>
                             
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/yohunl" title="新浪微博"></a></li>
+                            
                                 <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yohunl" title="GitHub"></a></li>
                             
                                 <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
@@ -144,7 +146,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        
+                        <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/定时器/" style="font-size: 10px;">定时器</a> <a href="/tags/静态/" style="font-size: 10px;">静态</a>
                     </div>
                 </section>
                 
@@ -153,9 +155,7 @@
                 <section class="switch-part switch-part3">
                     <div id="js-friends">
                     
-                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
-                    
-                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://yohunl.github.com/">GitHub</a>
                     
                       <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
                     
@@ -167,7 +167,7 @@
                 
                 <section class="switch-part switch-part4">
                 
-                    <div id="js-aboutme">专注于前端</div>
+                    <div id="js-aboutme">专注于移动端</div>
                 </section>
                 
             </div>
@@ -211,6 +211,8 @@
                             
                                 <li id="Email"><a class="Email" target="_blank" href="/yohunl@163.com" title="Email"></a></li>
                             
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/yohunl" title="新浪微博"></a></li>
+                            
                                 <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yohunl" title="GitHub"></a></li>
                             
                                 <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
@@ -247,6 +249,10 @@
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac/">mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客/">博客</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/静态/">静态</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -276,14 +282,12 @@
 <h3 id="u5EFA_u7ACB_u535A_u5BA2_u7AD9_u70B9"><a href="#u5EFA_u7ACB_u535A_u5BA2_u7AD9_u70B9" class="headerlink" title="建立博客站点"></a>建立博客站点</h3><p>随便建立一个用于存放博客站点的文件夹,cd命令进入,例如hexoBlog<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yohunldeMacBook-Pro:~ yohunl$ <span class="built_in">cd</span> /Volumes/macHDD/<span class="built_in">test</span>\ Projects/hexoB<span class="built_in">log</span> (我机子上的绝对路径,你的肯定不一样的)</span><br></pre></td></tr></table></figure></p>
 <p>站点的初始化<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">hexo</span> init <span class="comment">#来初始化这个站点</span></span><br></pre></td></tr></table></figure></p>
 <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yohunldeMacBook-Pro:hexoBlog yohunl$ hexo init</span><br><span class="line">INFO  Copying data <span class="keyword">to</span> /Volumes/macHDD/test Projects/hexoBlog</span><br><span class="line">INFO  You are almost done! Don't forget <span class="keyword">to</span> <span class="command">run</span> 'npm install' <span class="keyword">before</span> you start blogging <span class="keyword">with</span> Hexo!</span><br></pre></td></tr></table></figure>
-<p>这句命令运行完成,文件夹下</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/1552510-0c18166c39cf6081.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="11111.png"></p>
+<p>这句命令运行完成,文件夹下<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer1.png" alt=""></p>
 <p>这里为什么 会提示  要先运行 npm install呢,如果你不管它,直接像网上说的那样运行<br><strong>hexo generate （hexo g  也可以）</strong> 则会出现如下提示</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/1552510-cfc762f96b931816.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="66666.png"></p>
+<p><img src="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer2.png" alt="66666.png"></p>
 <p>很明确的告诉你,没找到local hexo</p>
 <p>所以hexo init后要接着npm install 或者 npm install hexo –save<br>这条命令时间可能有点长,等待它完成 , 当然,你也可以两个命令一起运行 <strong>hexo init &amp;&amp; npm install </strong><br>在目录下,多了一个目录node_modules</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/1552510-75db9f257db7b024.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="
-![Uploading 33333_647536.png . . .]"><br>接下来就可以生成静态页面了 #生成静态页面，会在public 目录下生成一系列html，css等文件。<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo <span class="keyword">generate</span> （hexo <span class="keyword">g</span>  也可以）</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer3.png" alt="Uploading 33333_647536.png . . .]"><br>接下来就可以生成静态页面了 #生成静态页面，会在public 目录下生成一系列html，css等文件。<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo <span class="keyword">generate</span> （hexo <span class="keyword">g</span>  也可以）</span><br></pre></td></tr></table></figure></p>
 <p>生成之后,就可以启动本地预览了</p>
 <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo server (hexo s) <span class="comment">#启动本地server</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">yohunldeMacBook-Pro:hexoblogs2 yohunl$ hexo server</span><br><span class="line">INFO  Hexo is running <span class="keyword">at</span> <span class="keyword">http</span>://<span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">4000</span>/. Press Ctrl+C <span class="built_in">to</span> <span class="built_in">stop</span>.</span><br></pre></td></tr></table></figure>
 <p>打开浏览器,输入 <a href="http://0.0.0.0:4000/,或者http://localhost:4000" target="_blank" rel="external">http://0.0.0.0:4000/,或者http://localhost:4000</a> 都可以打开博客了,port 预设为 4000，可在 _config.yml 设定</p>
@@ -297,8 +301,8 @@
 <p>接下来就可以部署了<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">hexo</span> deploy</span><br></pre></td></tr></table></figure></p>
 <p>注意上面的 type: 和git之间有一个空格,如果你没加,那么deploy命名就起不了作用了<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">ERROR Deployer not found: git 这个你可能会遇到的,遇到的解决方式</span><br><span class="line">ERROR Deployer not found: github</span><br><span class="line">npm <span class="operator"><span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span></span><br><span class="line">再执行 hexo deploy</span><br><span class="line">yohunldeMacBook-Pro:hexoBlog yohunl$ hexo deploy</span><br><span class="line">INFO  Deploying: git</span><br><span class="line">INFO  Setting up Git deployment...</span><br><span class="line"><span class="keyword">Initialized</span> <span class="keyword">empty</span> Git repository <span class="keyword">in</span> /Volumes/macHDD/<span class="keyword">test</span> Projects/hexoBlog/.deploy_git/.git/</span><br><span class="line">[<span class="keyword">master</span> (root-<span class="keyword">commit</span>) <span class="number">0</span>fa6454] <span class="keyword">First</span> <span class="keyword">commit</span></span><br><span class="line"> <span class="number">1</span> <span class="keyword">file</span> <span class="keyword">changed</span>, <span class="number">0</span> insertions(+), <span class="number">0</span> deletions(-)</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> placeholder</span><br><span class="line">INFO  Clearing .deploy folder...</span><br><span class="line">INFO  Copying files <span class="keyword">from</span> <span class="keyword">public</span> folder...</span><br><span class="line">[<span class="keyword">master</span> <span class="number">2171193</span>] Site <span class="keyword">updated</span>: <span class="number">2016</span>-<span class="number">02</span>-<span class="number">05</span> <span class="number">02</span>:<span class="number">32</span>:<span class="number">14</span></span><br><span class="line"> <span class="number">29</span> files <span class="keyword">changed</span>, <span class="number">5746</span> insertions(+)</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> <span class="number">2016</span>/<span class="number">02</span>/<span class="number">05</span>/hello-world/<span class="keyword">index</span>.html</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> archives/<span class="number">2016</span>/<span class="number">02</span>/<span class="keyword">index</span>.html</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> archives/<span class="number">2016</span>/<span class="keyword">index</span>.html</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> archives/<span class="keyword">index</span>.html</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> css/fonts/FontAwesome.otf</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> css/fonts/fontawesome-webfont.eot</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> css/fonts/fontawesome-webfont.svg</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> css/fonts/fontawesome-webfont.ttf</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> css/fonts/fontawesome-webfont.woff</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> css/images/banner.jpg</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> css/<span class="keyword">style</span>.css</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/blank.gif</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/fancybox_loading.gif</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/fancybox_loading@<span class="number">2</span>x.gif</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/fancybox_overlay.png</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/fancybox_sprite.png</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/fancybox_sprite@<span class="number">2</span>x.png</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/helpers/fancybox_buttons.png</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/helpers/jquery.fancybox-buttons.css</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/helpers/jquery.fancybox-buttons.js</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/helpers/jquery.fancybox-media.js</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/helpers/jquery.fancybox-thumbs.css</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/helpers/jquery.fancybox-thumbs.js</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/jquery.fancybox.css</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/jquery.fancybox.js</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> fancybox/jquery.fancybox.pack.js</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> <span class="keyword">index</span>.html</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">mode</span> <span class="number">100644</span> js/script.js</span><br><span class="line"> <span class="keyword">delete</span> <span class="keyword">mode</span> <span class="number">100644</span> placeholder</span><br><span class="line"> <span class="keyword">To</span> https://github.com/yohunl/yohunl.github.io.git</span><br><span class="line"> +f9914b9..<span class="number">.2171193</span> <span class="keyword">master</span> -&gt; <span class="keyword">master</span> (forced <span class="keyword">update</span>)</span><br><span class="line"> Branch <span class="keyword">master</span> <span class="keyword">set</span> up <span class="keyword">to</span> track remote branch <span class="keyword">master</span> <span class="keyword">from</span>               https://github.com/yohunl/yohunl.github.io.git.</span><br><span class="line"> INFO  Deploy done: git</span></span><br></pre></td></tr></table></figure></p>
 <p>经过deploy,等待<br>这过程中会让你输入git的用户名和密码<br>会在目录下生成</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/1552510-915fd3e5284c4501.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="33333.png"><br>,hexo会将其部署到github上,</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/1552510-e73714c80a10e885.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="44444.png"><br>可以看到,部署到github上的,就是这个.deploy_git中的内容</p>
+<p><img src="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer4.png" alt="33333.png"><br>,hexo会将其部署到github上,</p>
+<p><img src="http://7xqspl.com1.z0.glb.clouddn.com/nstimernstimer5.png" alt="44444.png"><br>可以看到,部署到github上的,就是这个.deploy_git中的内容</p>
 <p>打开域名<br><a href="http://yohunl.github.io" target="_blank" rel="external">http://yohunl.github.io</a> 就可以看到啦</p>
 <hr>
 <p>###备注</p>
@@ -331,7 +335,7 @@ openssl: 1.0.2e
         <p><span>本文标题:</span><a href="/2016/02/06/在github上搭建hexo静态博客/">在github上搭建hexo静态博客</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 Yohunl 的个人博客">Yohunl</a></p>
         <p><span>发布时间:</span>2016年02月06日 - 16时34分</p>
-        <p><span>最后更新:</span>2016年02月06日 - 16时39分</p>
+        <p><span>最后更新:</span>2016年02月07日 - 17时37分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/02/06/在github上搭建hexo静态博客/" title="在github上搭建hexo静态博客">http://yoursite.com/2016/02/06/在github上搭建hexo静态博客/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/02/06/在github上搭建hexo静态博客/　　作者: Yohunl" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -421,6 +425,26 @@ openssl: 1.0.2e
 </div>
 
 
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/02/06/在github上搭建hexo静态博客/" data-title="在github上搭建hexo静态博客" data-url="http://yoursite.com/2016/02/06/在github上搭建hexo静态博客/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yohunl"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
 
     
 
