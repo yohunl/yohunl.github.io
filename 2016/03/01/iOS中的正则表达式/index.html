@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS中的正则表达式 | yohunl&#39;s iOS blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在iOS中,系统自带的正则类是  NSRegularExpression初始化1+ (nullable NSRegularExpression *)regularExpressionWithPattern:(NSString *)pattern options:(NSRegularExpressionOptions)options error:(NSError **)error;
+使用实例:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS中的正则表达式">
+<meta property="og:url" content="http://yoursite.com/2016/03/01/iOS中的正则表达式/index.html">
+<meta property="og:site_name" content="yohunl's iOS blog">
+<meta property="og:description" content="在iOS中,系统自带的正则类是  NSRegularExpression初始化1+ (nullable NSRegularExpression *)regularExpressionWithPattern:(NSString *)pattern options:(NSRegularExpressionOptions)options error:(NSError **)error;
+使用实例:">
+<meta property="og:updated_time" content="2016-03-01T03:08:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS中的正则表达式">
+<meta name="twitter:description" content="在iOS中,系统自带的正则类是  NSRegularExpression初始化1+ (nullable NSRegularExpression *)regularExpressionWithPattern:(NSString *)pattern options:(NSRegularExpressionOptions)options error:(NSError **)error;
+使用实例:">
+  
+    <link rel="alternative" href="/atom.xml" title="yohunl&#39;s iOS blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" type="text/css">
+  
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.png" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/">Yohunl</a></h1>
+        </hgroup>
+
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/yohunl@163.com" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/yohunl" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yohunl" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/NSRegularExpression/" style="font-size: 10px;">NSRegularExpression</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/定时器/" style="font-size: 10px;">定时器</a> <a href="/tags/插件/" style="font-size: 10px;">插件</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/静态/" style="font-size: 10px;">静态</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://yohunl.github.com/">GitHub</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于移动端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Yohunl</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/avatar.png" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Yohunl</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/yohunl@163.com" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/yohunl" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yohunl" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-iOS中的正则表达式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/01/iOS中的正则表达式/" class="article-date">
+      <time datetime="2016-03-01T03:03:01.000Z" itemprop="datePublished">2016-03-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS中的正则表达式
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NSRegularExpression/">NSRegularExpression</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/正则表达式/">正则表达式</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="u5728iOS_u4E2D_2C_u7CFB_u7EDF_u81EA_u5E26_u7684_u6B63_u5219_u7C7B_u662F_NSRegularExpression"><a href="#u5728iOS_u4E2D_2C_u7CFB_u7EDF_u81EA_u5E26_u7684_u6B63_u5219_u7C7B_u662F_NSRegularExpression" class="headerlink" title="在iOS中,系统自带的正则类是  NSRegularExpression"></a>在iOS中,系统自带的正则类是  NSRegularExpression</h2><h3 id="u521D_u59CB_u5316"><a href="#u521D_u59CB_u5316" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (nullable <span class="built_in">NSRegularExpression</span> *)regularExpressionWithPattern:(<span class="built_in">NSString</span> *)pattern options:(<span class="built_in">NSRegularExpressionOptions</span>)options error:(<span class="built_in">NSError</span> **)error;</span><br></pre></td></tr></table></figure>
+<h3 id="u4F7F_u7528_u5B9E_u4F8B_3A"><a href="#u4F7F_u7528_u5B9E_u4F8B_3A" class="headerlink" title="使用实例:"></a>使用实例:</h3><a id="more"></a>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *text = <span class="string">@"tttt [[UIColor alloc]initWithRed:0.2f  green:2/255  blue:2.0/255 alpha:1] jfkjfkej"</span>;</span><br><span class="line"> <span class="built_in">NSRegularExpression</span> *rgba<span class="built_in">UIColorRegex</span> = [<span class="built_in">NSRegularExpression</span> regularExpressionWithPattern:<span class="string">@"(\\[\\s*UIColor\\s+colorWith|\\[\\s*\\[\\s*UIColor\\s+alloc\\]\\s*initWith)Red:\\s*([0-9]*\\.?[0-9]*f?)\\s*(\\/\\s*[0-9]*\\.?[0-9]*f?)?\\s+green:\\s*([0-9]*\\.?[0-9]*f?)\\s*(\\/\\s*[0-9]*\\.?[0-9]*f?)?\\s+blue:\\s*([0-9]*\\.?[0-9]*f?)\\s*(\\/\\s*[0-9]*\\.?[0-9]*f?)?\\s*alpha:\\s*([0-9]*\\.?[0-9]*f?)\\s*(\\/\\s*[0-9]*\\.?[0-9]*f?)?\\s*\\]"</span> options:<span class="built_in">NSRegularExpressionCaseInsensitive</span> error:<span class="literal">NULL</span>];</span><br><span class="line"> [rgba<span class="built_in">UIColorRegex</span> enumerateMatchesInString:text options:<span class="number">0</span> range:<span class="built_in">NSMakeRange</span>(<span class="number">0</span>, text<span class="variable">.length</span>) usingBlock:^(<span class="built_in">NSTextCheckingResult</span> *result, <span class="built_in">NSMatchingFlags</span> flags, <span class="built_in">BOOL</span> *stop) &#123;</span><br><span class="line">     <span class="built_in">NSRange</span> totalRange = [result range];</span><br><span class="line">     <span class="built_in">NSLog</span>(<span class="string">@"totalRange = %@,totalPattern = %@"</span>,<span class="built_in">NSStringFromRange</span>(totalRange),[text substringWithRange:totalRange]);</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">9</span>; i++) &#123;</span><br><span class="line">         <span class="built_in">NSString</span> *subStr = <span class="literal">nil</span>;</span><br><span class="line">         <span class="built_in">NSRange</span> range = [result rangeAtIndex:i];</span><br><span class="line">         <span class="keyword">if</span> (range<span class="variable">.location</span> != <span class="built_in">NSNotFound</span>) &#123;</span><br><span class="line">             subStr = [text substringWithRange:range];</span><br><span class="line"></span><br><span class="line">         &#125;</span><br><span class="line">         <span class="built_in">NSLog</span>(<span class="string">@"pattern Group %d is:%@"</span>,i,subStr);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line"> &#125;];</span><br></pre></td></tr></table></figure>
+<p>输出<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2016-03-01 07:07:00.503 tttt[10249:271036] totalRange = &#123;5, 68&#125;,totalPattern = [[UIColor alloc]initWithRed:0.2f  green:2/255  blue:2.0/255 alpha:1]&#10;2016-03-01 07:07:00.504 tttt[10249:271036] pattern Group 0 is:[[UIColor alloc]initWithRed:0.2f  green:2/255  blue:2.0/255 alpha:1]&#10;2016-03-01 07:07:00.504 tttt[10249:271036] pattern Group 1 is:[[UIColor alloc]initWith&#10;2016-03-01 07:07:00.505 tttt[10249:271036] pattern Group 2 is:0.2f&#10;2016-03-01 07:07:00.505 tttt[10249:271036] pattern Group 3 is:(null)&#10;2016-03-01 07:07:00.505 tttt[10249:271036] pattern Group 4 is:2&#10;2016-03-01 07:07:00.505 tttt[10249:271036] pattern Group 5 is:/255&#10;2016-03-01 07:07:00.505 tttt[10249:271036] pattern Group 6 is:2.0&#10;2016-03-01 07:07:00.506 tttt[10249:271036] pattern Group 7 is:/255&#10;2016-03-01 07:07:00.506 tttt[10249:271036] pattern Group 8 is:1&#10;2016-03-01 07:07:00.506 tttt[10249:271036] pattern Group 9 is:(null)</span><br></pre></td></tr></table></figure></p>
+<p>从中我们可以看到[result range] 和 [result rangeAtIndex:0] 是等价的,都是表示匹配完整的正则表达式的的整个字符串<br>一个NSTextCheckingResult可能包含多个item,你可以使用索引去获取它们<br>[match rangeAtIndex:0];表示整个的匹配正则的结果<br>[match rangeAtIndex:1]; (如果存在)表示的是匹配正则中的第一组!<br>每一次的完整匹配组成一次NSTextCheckingResult <em>result,什么意思呢<br>还是举例子说明吧,如果我们的text是<br>NSString </em>text = @”[[UIColor alloc]initWithRed:0.23f  green:22/255  blue:2.0/255 alpha:1] tttt [[UIColor alloc]initWithRed:0.2f  green:2/255  blue:2.0/255 alpha:1] jfkjfkej”<br>那么<br>usingBlock:^(NSTextCheckingResult <em>result, NSMatchingFlags flags, BOOL </em>stop) 这个block会进入两次,第一次的结果匹配到的是[[UIColor alloc]initWithRed:0.23f  green:22/255  blue:2.0/255 alpha:1],第二次是[[UIColor alloc]initWithRed:0.2f  green:2/255  blue:2.0/255 alpha:1]</p>
+<h2 id="u7EE7_u7EED_u5206_u6790_u4E0A_u9762_u7684_u793A_u4F8B_u4EE3_u7801"><a href="#u7EE7_u7EED_u5206_u6790_u4E0A_u9762_u7684_u793A_u4F8B_u4EE3_u7801" class="headerlink" title="继续分析上面的示例代码"></a>继续分析上面的示例代码</h2><p>无论Objective-C还是Swift，你在字面量字符串中都需要转义一些特殊字符（在他们之前添加\字符）。这其中一个字符就是反斜线自身\！既然这个被用来创建正则表达式的模式也是字符串，在你处理String 和 NSRegularExpression，你需要转义反斜线时,在标准的模式串中 . 在OC的模式串定义中,应该是 @“\.”<br>所以你看上面的串<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">@"(\\[\\s*UIColor\\s+colorWith|\\[\\s*\\[\\s*UIColor\\s+alloc\\]\\s*initWith)Red:"</span></span><br></pre></td></tr></table></figure></p>
+<p>首先你可以直接简化为标准模式串中的<br>([\s<em>UIColor\s+colorWith|[\s</em>[\s<em>UIColor\s+alloc]\s</em>initWith)Red:<br>这样有助于你理解</p>
+<p>至于各个符号表示啥意思,可以查看标准的正则中的符号意义,这里就不赘述了.<br>在Swift（或者Objective-C）代码中标准的.将会显示为\.<br><a href="http://www.cnblogs.com/yirlin/archive/2006/04/12/373222.html就有,可以参考" target="_blank" rel="external">http://www.cnblogs.com/yirlin/archive/2006/04/12/373222.html就有,可以参考</a></p>
+<h2 id="u5173_u4E8E_u6A21_u5F0F_u4E2D_u7684group_28_u7EC4_2C_u5B50_u7EC4_2C_u5B50_u6A21_u5F0F_29"><a href="#u5173_u4E8E_u6A21_u5F0F_u4E2D_u7684group_28_u7EC4_2C_u5B50_u7EC4_2C_u5B50_u6A21_u5F0F_29" class="headerlink" title="关于模式中的group(组,子组,子模式)"></a>关于模式中的group(组,子组,子模式)</h2><p>捕获组有两种形式<br>一种是普通的捕获组，不产生歧义的情况下，后面简称捕获组，语法规则：(expression)；<br>另一种是命名捕获组，语法规则：(?<name>expression)或者(?’name’expression)，这两种写法是等价的。<br>普通捕获组的情况下，捕获组的编号是按照“(”出现的顺序，从左到右，从1开始进行编号的,0表示的是整个<br>还是看上面的例子<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">@"(\\[\\s*UIColor\\s+colorWith|\\[\\s*\\[\\s*UIColor\\s+alloc\\]\\s*initWith)Red:\\s*([0-9]*\\.?[0-9]*f?)\\s*(\\/\\s*[0-9]*\\.?[0-9]*f?)?\\s+green:\\s*([0-9]*\\.?[0-9]*f?)\\s*(\\/\\s*[0-9]*\\.?[0-9]*f?)?\\s+blue:\\s*([0-9]*\\.?[0-9]*f?)\\s*(\\/\\s*[0-9]*\\.?[0-9]*f?)?\\s*alpha:\\s*([0-9]*\\.?[0-9]*f?)\\s*(\\/\\s*[0-9]*\\.?[0-9]*f?)?\\s*\\]"</span></span><br></pre></td></tr></table></figure></name></p>
+<p>在结果 NSTextCheckingResult *result 中,[result rangeAtIndex:1];表示的是匹配第一个子模式(也就是匹配<br><figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="command">\\</span><span class="special">[</span><span class="command">\\</span>s*UIColor<span class="command">\\</span>s+colorWith|<span class="command">\\</span><span class="special">[</span><span class="command">\\</span>s*<span class="command">\\</span><span class="special">[</span><span class="command">\\</span>s*UIColor<span class="command">\\</span>s+alloc<span class="command">\\</span><span class="special">]</span><span class="command">\\</span>s*initWith)</span><br></pre></td></tr></table></figure></p>
+<p>的).<br>以此类推.</p>
+<p>举个更简单的例子</p>
+<p>(\d{4})-(\d{2}-(\d\d))<br>那么分组的编号是<br>0 (\d{4})-(\d{2}-(\d\d))<br>1 (\d{4})<br>2 (\d{2}-(\d\d))<br>3  (\d\d)</p>
+<h2 id="u53C2_u8003_u6587_u6863"><a href="#u53C2_u8003_u6587_u6863" class="headerlink" title="参考文档"></a>参考文档</h2><p><a href="http://www.jianshu.com/p/a784c12c498c" target="_blank" rel="external">http://www.jianshu.com/p/a784c12c498c</a> NSRegularExpression<br><a href="http://stackoverflow.com/questions/9276246/how-to-write-regular-expressions-in-objective-c-nsregularexpression" target="_blank" rel="external">http://stackoverflow.com/questions/9276246/how-to-write-regular-expressions-in-objective-c-nsregularexpression</a> group<br><a href="http://blog.csdn.net/wanglei19880622/article/details/7204492" target="_blank" rel="external">http://blog.csdn.net/wanglei19880622/article/details/7204492</a> 子模式<br><a href="http://www.jb51.net/article/19334.htm" target="_blank" rel="external">http://www.jb51.net/article/19334.htm</a> 组的概念</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/03/01/iOS中的正则表达式/">iOS中的正则表达式</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Yohunl 的个人博客">Yohunl</a></p>
+        <p><span>发布时间:</span>2016年03月01日 - 11时03分</p>
+        <p><span>最后更新:</span>2016年03月01日 - 11时08分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/03/01/iOS中的正则表达式/" title="iOS中的正则表达式">http://yoursite.com/2016/03/01/iOS中的正则表达式/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/03/01/iOS中的正则表达式/　　作者: Yohunl" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/03/01/xcode7-插件制作入门/">
+                    xcode7 插件制作入门
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u5728iOS_u4E2D_2C_u7CFB_u7EDF_u81EA_u5E26_u7684_u6B63_u5219_u7C7B_u662F_NSRegularExpression"><span class="toc-number">1.</span> <span class="toc-text">在iOS中,系统自带的正则类是  NSRegularExpression</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u521D_u59CB_u5316"><span class="toc-number">1.1.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u4F7F_u7528_u5B9E_u4F8B_3A"><span class="toc-number">1.2.</span> <span class="toc-text">使用实例:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7EE7_u7EED_u5206_u6790_u4E0A_u9762_u7684_u793A_u4F8B_u4EE3_u7801"><span class="toc-number">2.</span> <span class="toc-text">继续分析上面的示例代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u5173_u4E8E_u6A21_u5F0F_u4E2D_u7684group_28_u7EC4_2C_u5B50_u7EC4_2C_u5B50_u6A21_u5F0F_29"><span class="toc-number">3.</span> <span class="toc-text">关于模式中的group(组,子组,子模式)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u53C2_u8003_u6587_u6863"><span class="toc-number">4.</span> <span class="toc-text">参考文档</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/03/01/iOS中的正则表达式/" data-title="iOS中的正则表达式" data-url="http://yoursite.com/2016/03/01/iOS中的正则表达式/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yohunl"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/03/01/xcode7-插件制作入门/" title="下一篇: xcode7 插件制作入门">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/03/01/iOS中的正则表达式/">iOS中的正则表达式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/01/xcode7-插件制作入门/">xcode7 插件制作入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/06/在github上搭建hexo静态博客/">在github上搭建hexo静态博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/06/NSTimer和实现弱引用的timer的方式/">NSTimer和实现弱引用的timer的方式</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 Yohunl
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的静态博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减双栏 Hexo 博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
