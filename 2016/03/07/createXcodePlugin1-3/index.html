@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>createXcodePlugin1/3 | yohunl&#39;s iOS blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文翻译自 https://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1
+原作者：Derek Selander
+译者：@yohunl
+译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,文章中说说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看
+苹果的”一个足以应付所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="createXcodePlugin1/3">
+<meta property="og:url" content="http://yoursite.com/2016/03/07/createXcodePlugin1-3/index.html">
+<meta property="og:site_name" content="yohunl's iOS blog">
+<meta property="og:description" content="本文翻译自 https://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1
+原作者：Derek Selander
+译者：@yohunl
+译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,文章中说说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看
+苹果的”一个足以应付所有">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_1.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_2.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_3.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_4.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_5.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_6.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_7.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_8.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_9.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_10.gif">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_11.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_12.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_13.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_14.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_15.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_16.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_17.png">
+<meta property="og:updated_time" content="2016-03-07T01:12:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="createXcodePlugin1/3">
+<meta name="twitter:description" content="本文翻译自 https://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1
+原作者：Derek Selander
+译者：@yohunl
+译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,文章中说说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看
+苹果的”一个足以应付所有">
+  
+    <link rel="alternative" href="/atom.xml" title="yohunl&#39;s iOS blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" type="text/css">
+  
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.png" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/">Yohunl</a></h1>
+        </hgroup>
+
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/yohunl@163.com" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/yohunl" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yohunl" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/NSRegularExpression/" style="font-size: 10px;">NSRegularExpression</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/plugin/" style="font-size: 10px;">plugin</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/定时器/" style="font-size: 10px;">定时器</a> <a href="/tags/插件/" style="font-size: 20px;">插件</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/静态/" style="font-size: 10px;">静态</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://yohunl.github.com/">GitHub</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于移动端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Yohunl</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/avatar.png" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Yohunl</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/yohunl@163.com" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/yohunl" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yohunl" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-createXcodePlugin1-3" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/07/createXcodePlugin1-3/" class="article-date">
+      <time datetime="2016-03-07T00:12:43.000Z" itemprop="datePublished">2016-03-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      createXcodePlugin1/3
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/plugin/">plugin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/插件/">插件</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>本文翻译自 <a href="https://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1" target="_blank" rel="external">https://www.raywenderlich.com/94020/creating-an-xcode-plugin-part-1</a></p>
+<p>原作者：<a href="https://www.raywenderlich.com/u/lolgrep" target="_blank" rel="external">Derek Selander</a></p>
+<p>译者：<a href="http://weibo.com/yohunl" target="_blank" rel="external">@yohunl</a></p>
+<p>译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,文章中说说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看</p>
+<p>苹果的”一个足以应付所有”策略使得它的产品越来越像一个难以下咽的药丸.尽管苹果已经将一些工作流带给了ios/os x的开发者,我们仍然希望通过插件来使得xcode更加顺手!</p>
+<p>虽然苹果并没有提供任何的官方文档来指导我们如何创建一个xcode插件,但是开发者社区做了大量的工作开发了一些非常有用的工具,通过这些工具,可以用来帮助开发者.</p>
+<p>从 <a href="https://github.com/ksuther/KSImageNamed-Xcode" target="_blank" rel="external">自动完成图片名的插件</a>,到 <a href="https://github.com/kattrali/deriveddata-exterminator" target="_blank" rel="external">清除缓存的插件</a> 再到 <a href="https://github.com/XVimProject/XVim" target="_blank" rel="external">使得xcode变成一个vim编辑器的插件</a>,xcode的插件社区已经拓展了我们的思维,我们可以让xcode变得更加智能</p>
+<p>在这个不算短的三部分教程中,你将创建一个xcode的插件来娱乐你的同事,其特色莫过于显示的内容并不是他所期望看到的！尽管这个插件是很轻量级的,你仍然可以学习到很多知识,例如,通过调试xcode,怎样找出你感兴趣的元素并且修改它,怎样将系统的功能函数替换为你自己的函数(通过swizzle技术)!<br><a id="more"></a><br>你将会使用 <a href="https://www.mikeash.com/pyblog/friday-qa-2011-12-16-disassembling-the-assembly-part-1.html" target="_blank" rel="external">x86汇编知识</a>,<a href="https://www.raywenderlich.com/79600/navigating-a-new-codebase" target="_blank" rel="external">代码定技能</a>,<a href="https://www.raywenderlich.com/?s=lldb" target="_blank" rel="external">LLDB调试技能</a>来查阅未公开的私有framework,并且要探索这些私有framework中的私有apis,还要使用 <a href="http://nshipster.com/method-swizzling/" target="_blank" rel="external">method swizzleing</a>来进行代码的注入.正因为有这么多内容,所以本教程的讲解速度会很快.在继续之前,请务必确定你已经掌握了相关的 iOS/OS X的开发.</p>
+<p>使用swift来开发插件,还是一个比较复杂的专题,并且swift的调试工具依然比Objective-C要弱很多.就目前而言,这意味着插件开发的最佳选择（本教程！）是的Objective-C</p>
+<h2 id="u5F00_u59CB"><a href="#u5F00_u59CB" class="headerlink" title="开始"></a>开始</h2><hr>
+<p>  为了庆祝 恶作剧你的同事日,你的xcode插件将会Rayroll你的受害者.等等… 什么是Rayrolling?它是一个免费和无版权的<a href="http://baike.baidu.com/link?url=W4krw03CLsD9mYK6Dgpwtj4Q2bz9-Ou-62rKn6JlOb5n_Q5hBsy-YhVDkQNzb1D4WOURMaAWeDM-qIrse3-naa" target="_blank" rel="external">Rayrolling瑞克摇摆</a>-就是你看到的内容并不是你期望的内容,有点挂羊头卖狗肉的意思.当你完成了这个系列,你的插件将会更改xcode显示的内容:</p>
+<ol>
+<li>用Ray’s的头像来替换xcode的某些警示框(例如, Build成功或者失败的xcode提示框)<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_1.png" alt="Xcode_Swizzle_DispalAlert-700x215.png"></li>
+<li>替换xcode的标题内容为Ray的热门歌曲的一句歌词,<em>Never Gonna Live You Up</em><br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_2.png" alt="Plugin_Swizzled_Titlebar-700x56.png"></li>
+<li>替换所有的xcode中的搜索文档内容为一个视频 <a href="https://www.youtube.com/watch?v=ce-_0opZzh0" target="_blank" rel="external">Rayroll’d video</a><br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_3.png" alt="Plugin_Swizzle_Documentation-700x288.png"></li>
+</ol>
+<p>在教程的第一部分,我们将聚焦于寻找到负责展示”Build成功”警示框的那个类,并且将其图片改为Ray的头像这张图片</p>
+<h2 id="u5B89_u88C5_u63D2_u4EF6_u7BA1_u7406_u63D2_u4EF6_Alcatraz"><a href="#u5B89_u88C5_u63D2_u4EF6_u7BA1_u7406_u63D2_u4EF6_Alcatraz" class="headerlink" title="安装插件管理插件  Alcatraz"></a>安装插件管理插件  Alcatraz</h2><hr>
+<p>在开始之前,需要先安装<a href="http://alcatraz.io" target="_blank" rel="external">Alcatraz</a>,它是xcode插件管理工具.<br>典型的安装Alcatraz的方式是通过命令行<br><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https:<span class="regexp">//raw</span>.github.com/supermarin/Alcatraz/master/Scripts/install.sh | sh</span><br></pre></td></tr></table></figure></p>
+<p>当这条命令结束后,重启xcode.你可能会看到一个提示 Alcatraz bundle的警示框;点击 <em>Load Bundle</em> 继续,以便xcode能够加载Alcatraz插件,这样这个Alcatraz插件才能起作用<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_4.png" alt="Xcode6.3.2-480x270.png"><br>    <strong>注意:如果你一不小心点击了”skip bundle”,你可以通过命令行输入以下命令来重新显示它!<br>    defaults delete com.apple.dt.Xcode DVTPlugInManagerNonApplePlugIns-Xcode-7.2.1<br>    以上的Xcode-7.2.1是你机子上的xcode版本号,如果你的不是7.2.1,改为你的对应的版本号就可以了</strong></p>
+<p>你将会在xcode的<strong>Window</strong>菜单下看到一个新的菜单项:<strong>Package Manager</strong>.创建一个xcode插件,需要你通过设置<strong>Build Settings</strong>来运行另一个新的xcode的实例来加载才可以,这是一个枯燥和乏味的过程(如果想知道这个枯燥的过程,可以参考我的文章<a href="http://yohunl.com/2016/03/01/xcode7-插件制作入门" target="_blank" rel="external">xcode7 插件制作入门</a>),幸好,已经有人替你完成了这件事情了,有人开发了一个xcode的工程模板,可以让你很方便的创建一个插件工程.</p>
+<p>打开Alcatraz(Window-&gt;Package Manager).在Alcatraz的搜索框中输入Xcode Plugin.务必确保你选中了搜索框中的<strong>All</strong>和<strong>Templates</strong>两个属性.一旦你搜索到了.单机其左边的<strong>Install</strong>来安装它!!<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_5.png" alt="XcodeAlcatrazPlugin-700x208.png"></p>
+<pre><code>如果你搜索不到,也没关系,你可以前往 https://github.com/kattrali/Xcode-Plugin-Template自己下载下来的方式来加载它,具体安装方式可以见工程的说明
+</code></pre><p>一旦Alcatraz下载完了Xcode Plugin插件,你就可以创建一个插件工程了(File-&gt;New -&gt; Project…),选择这个新的<strong>OS X -&gt;Xcode Plugin -&gt;Xcode Plugin</strong>模板,然后,点击下一步.<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_6.png" alt="XcodePluginSelection-480x282.png"><br>给工程取名字<strong>Rayrolling</strong>,组织的标识符为<strong>com.raywenderlich</strong>(这一步非常重要),选择Objective-C作为代码语言..保存工程到任何一个你想放置的目录中.<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_7.png" alt="Plugin_Xcode_Setup-480x281.png"></p>
+<h2 id="Hello_World_u63D2_u4EF6_u6A21_u677F"><a href="#Hello_World_u63D2_u4EF6_u6A21_u677F" class="headerlink" title="Hello World插件模板"></a>Hello World插件模板</h2><hr>
+<p>编译,然后运行这个Rayroll工程,你将会看到一个新的xcode实例出现.这个xcode实例在Edit菜单栏下多了一个菜单项<strong>Do Action</strong>:<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_8.png" alt="XcodePluginHelloWorld-232x320.png"><br>选择这个菜单项,将会出现一个模态的弹出框:<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_9.png" alt="Screen-Shot-2015-05-11-at-8.48.27-PM-480x239.png"><br>从xcode5开始,插件都只能运行在特定版本的xcode中.这也就意味着当新的xcode更新安装后,所有的第三方插件都将失效,除非你添加了该版本xcode的UUID.如果部分模板没有起作用,你也没看到一个新的菜单项,可能的原因之一就是因为没有对应版本的UUID,你需要添加对应该版本xcode的支持.<br>为了添加UUID,首先是在命令行中运行以下命令<br><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaults <span class="keyword">read</span> /Applications/Xcode.app/Contents/Info DVTPlugInCompatibilityUUID</span><br></pre></td></tr></table></figure></p>
+<p>这条命令会输出当前版本xcode的UUID.打开Rayroll工程的Info.plist文件.导航到<strong>DVTPlugInCompatibilityUUID</strong>,添加它<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_10.gif" alt="DVTCompatibilityUUIDs.gif"><br>    注意:通过本教程,你会运行和修改已经安装了的插件.这将会改变xcode的默认行为,当然,这也可能会导致xcode crash!!如果你想禁止某个插件,你可以手动的通过终端去删除它</p>
+  <figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~<span class="regexp">/Library/</span>Application\ Support/Developer/Shared/Xcode/Plug-ins/</span><br><span class="line">    rm -r Rayrolling.xcplugin/</span><br></pre></td></tr></table></figure>
+<p>  然后重启一下xcode</p>
+<h2 id="u627E_u5230_u6211_u4EEC_u8981_u4FEE_u6539_u7684xcode_u7684_u67D0_u9879_u7279_u6027"><a href="#u627E_u5230_u6211_u4EEC_u8981_u4FEE_u6539_u7684xcode_u7684_u67D0_u9879_u7279_u6027" class="headerlink" title="找到我们要修改的xcode的某项特性"></a>找到我们要修改的xcode的某项特性</h2><hr>
+<p>最直接最有效的得到幕布后发生什么的方式是 通过注册一个NSNotification observer 来监听所有的xcode事件.通过xcode和监听这些消息通知,你将会深入到一些内部类的内部.</p>
+<p>打开<strong>Rayrollling.m</strong>,在类中添加如下的属性</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSMutableSet</span> *notificationSet;</span><br></pre></td></tr></table></figure>
+<p>这个<strong>NSMutableSet</strong>用来存储所有的xcode的控制台打印出来的<strong>NSNotification</strong>的名字<br>下一步,在<strong>initWithBundle:</strong>中,<strong>if (self = [super init]) {</strong>之后,添加如下代码</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="built_in">NSNotificationCenter</span> defaultCenter] addObserver:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(handleNotification:) name:<span class="literal">nil</span> object:<span class="literal">nil</span>];</span><br><span class="line"> </span><br><span class="line"><span class="keyword">self</span><span class="variable">.notificationSet</span> = [<span class="built_in">NSMutableSet</span> new];</span><br></pre></td></tr></table></figure>
+<p>给<strong>name</strong>参数传递<strong>nil</strong>指示,偶们需要监听xcode的所有NSNotification.</p>
+<p>现在,实现<strong>handleNotification:</strong>方法:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)handleNotification:(<span class="built_in">NSNotification</span> *)notification &#123;</span><br><span class="line">  <span class="keyword">if</span> (![<span class="keyword">self</span><span class="variable">.notificationSet</span> containsObject:notification<span class="variable">.name</span>]) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@, %@"</span>, notification<span class="variable">.name</span>, [notification<span class="variable">.object</span> class]);</span><br><span class="line">    [<span class="keyword">self</span><span class="variable">.notificationSet</span> addObject:notification<span class="variable">.name</span>];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>handleNotification:</strong>检查获取到的通知名称是不是在<strong>notificationSet</strong>中,如果不是,则在控制台打印出它的通知名和通知多对应的类.然后添加到<strong>notificationSet</strong>中.通过这种方式,你只会在控制台看到每一种类型的通知一次</p>
+<p>下一步,找到添加menu item的声明,将其替换成下面的代码</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSMenuItem</span> *actionMenuItem = [[<span class="built_in">NSMenuItem</span> alloc] initWithTitle:<span class="string">@"Reset Logger"</span></span><br><span class="line"> action:<span class="keyword">@selector</span>(doMenuAction) keyEquivalent:<span class="string">@""</span>];</span><br></pre></td></tr></table></figure>
+<p>这段代码只是简单的更改了<strong>NSMenuItem</strong>的标题,以便让你知道,当你点击它的时候,它将会重置存放<strong>NSNotification </strong>的set对象.</p>
+<p>最后,替换<strong>doMenuAction</strong>的实现代码为下面的</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)doMenuAction &#123;</span><br><span class="line">  [<span class="keyword">self</span><span class="variable">.notificationSet</span> removeAllObjects];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个菜单项将会重置所有存放在<strong>notificationSet</strong>属性中的通知.这样做的目的是让你在控制台中很容易的观察到你感兴趣的通知,而不至于被控制台的重复消息所刷屏.让你更加专注.</p>
+<p>再一次编译运行,请确认你分清了哪个是你工程的xcode(也就是父xcode),哪个是你debug出来的一个xcode实例(子xcode),为什么要分清楚呢?因为我们的每一次改变,当重新debug的时候,debug出来的xcode中已经起作用了,而父xcode,只有等到你重启后,才能看到效果的.</p>
+<p>在子xcode中,随便点击点击按钮,打开一些窗口,浏览浏览程序,你会在父xcode的控制台中看到消息的触发.</p>
+<h2 id="u67E5_u627E_u548C_u76D1_u6D4B_u7F16_u8BD1_u7684_u63D0_u793A_u6846"><a href="#u67E5_u627E_u548C_u76D1_u6D4B_u7F16_u8BD1_u7684_u63D0_u793A_u6846" class="headerlink" title="查找和监测编译的提示框"></a>查找和监测编译的提示框</h2><hr>
+<p>现在,你已经学会了基本的查看由xcode本身引起的通知(NSNotification),现在你需要明确的找出来显示编译状态的提示框所关联的类是哪一个.</p>
+<p>运行xcode插件,在子xcode中,打开任何一个工程,确保打开了xcode设置中的bezel notifications,Succeeds和Fails中的bezel notifications都要打开.当然了,请再次确定你操作的是子xcode实例!<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_11.png" alt="rayroll-bezel-685x500.png"></p>
+<p>通过你在xcode的edit菜单中创建的 菜单项<strong>Reset Logger</strong>来重置<strong>notificationSet</strong>,然后运行你的子code(上面让你在子xcode中打开了任何一个工程,现在你在子xcode中运行这个打开的工程)</p>
+<p>当子xcode的工程编译结果出来后(或者成功,或者失败都没关系),关注父xcode中控制台输出的信息.粗略的浏览一遍,看是否有能引起你关注的通知.你能够发现一些值得你进一步关注的notifications么?下面的这些可能能给你一些帮助(原文中,以下的列表是隐藏的,你可以点击展示它,作者鼓励大家自己先找找看,如果找不到,再打开下面的这个提示,由于我使用的markdown编辑器的限制,做不到这点,所以此处直接放出来了)</p>
+<blockquote>
+<p>下面的一些项值得你进一步关注:</p>
+<ul>
+<li>NSWindowWillOrderOffScreenNotification, DVTBezelAlertPanel</li>
+<li>NSWindowDidOrderOffScreenNotification, DVTBezelAlertPanel</li>
+<li>NSWindowDidOrderOffScreenAndFinishAnimatingNotification, DVTBezelAlertPanel<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_12.png" alt="XcodeNotificationListeningSourceKitCrash-700x272.png"></li>
+</ul>
+</blockquote>
+<p>你应该挑其中一个,并进一步探索它,看看是不是可以从中得到一些重要的信息.例如 NSWindowWillOrderOffScreenNotification是干什么的? 很好,你选择了进一步探索NSWindowWillOrderOffScreenNotification.</p>
+<p>回到父xcode中的Rayrolled.m文件,定位到<strong>handleNotification:</strong>方法,添加一个断点到方法中的第一行,并且按照如下来设置这个断点:<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_13.png" alt="Xcode_Add_Symbolic_Breakpoint-700x288.png"></p>
+<ol>
+<li>鼠标停在这个断点,右击这个断点,选择 <strong>Edit Breakpoint</strong></li>
+<li>在弹出的断点编辑框中的condition输入框中,添加<strong>[notification.name isEqualToString:@”NSWindowWillOrderOffScreenNotification”]</strong></li>
+<li>在Action部分,添加 <strong>po notification.object</strong></li>
+<li>如果父xcode已经处在运行状态了,重新让它运行debug,然后在生成的子xcode中,再编译运行一个工程.父xcode中的断点应该会停在<strong>NSWindowWillOrderOffScreenNotification</strong>通知.观察控制台输出的<strong>-[notification object]</strong>的值<strong>DVTBezelAlertPanel</strong>,这也是第一个值得你深入关注的诸多私有类中的一员</li>
+</ol>
+<p>你现在知道了有一个类的名字叫<strong>DVTBezelAlertPanel</strong>,更重要的是,你知道,内存中有一个这个类的实例.不过不幸的是,你找到不到任何关于这个类的头文件能够告诉你,这个类是否就是展示xcode的警示框的.</p>
+<p>实际上,还是可以获取到这些信息的.尽管我们没有关于这个类的头文件,可是你有一个调试器连接到子xcode,内存中的信息照样可以告诉你关于这个类的相关信息,就如同你阅读其头文件一样.</p>
+<blockquote>
+<p>注意:在这个系列的教程中,LLDB的输出通常是伴随在标准的控制台输出中的.任何以(lldb)打头的行,可以认为是输入行,在此处你可以输入一些命令.三个点…输出在控制台,表示控制台来打印不及,忽略了其中某些.如果在控制台显示了太多的打印日志,可以直接按<strong> ⌘ + K</strong>来清楚当前的输出,并且重新接受输出</p>
+</blockquote>
+<p>确保你父xcode是调试状态的,程序停在断点处,输入以下的lldb命令道父xcode的lldb控制台:</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(lldb) image lookup -rn DVTBezelAlertPanel</span><br><span class="line"><span class="number">17</span> matches found in /Applications/Xcode.app/Contents/SharedFrameworks/DVTKit.framework/Versions/A/DVTKit: </span><br><span class="line">...(这里的...是表示省略了上面那句命令的输出内容,因为实在太多了)</span><br></pre></td></tr></table></figure>
+<p>这句命令搜索任何的加载到xcode进程中的frameworks,libraries,plugins,查找名为<strong>DVTBezelAlertPanel</strong>的类的相关信息,然后输出查找到的信息.观察搜索结果列出的方法.你是否已经能够找到一些方法可以用来关联<strong>DVTBezelAlertPanel</strong>类和子xocde中出现的编译成功/失败的警示框?下面我提供了一些方法的列表,这些可以帮助到你.(原文中,以下的列表是隐藏的,你可以点击展示它,作者鼓励大家自己先找找看,如果找不到,再打开下面的这个提示,由于我使用的markdown编辑器的限制,做不到这点,所以此处直接放出来了)</p>
+<blockquote>
+<p>有帮助的方法<br>以下列出的<strong>DVTBezelAlertPanel</strong>类的方法,值得你进一步探索</p>
+<ul>
+<li><strong>initWithIcon:message:parentWindow:duration</strong></li>
+<li><strong>initWithIcon:message:controlView:duration:</strong></li>
+<li><strong>controlView</strong><br>以上的两个初始话方法中的任何一个,基本上就可以帮助你验证是否关联了类<strong>DVTBezelAlertPanel</strong>和出现的提示框中的内容了</li>
+</ul>
+<p>注意:LLDB的<strong>image lookup</strong>命令只列出在内存中实现了的方法.当你使用这个查找某些类时候,它并不包含那些继承于父类,但是子类并没有重载的方法,也就是说它只列出自己实现了的方法.</p>
+</blockquote>
+<p>确保依然停留在父xcode的断点出,在父类的LLDB控制台中输入以下命令来 检测<strong>contentView</strong></p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po [notification.object controlView]</span><br><span class="line">&lt;nil&gt; (这个是上句输出的结果,yohunl注)</span><br></pre></td></tr></table></figure>
+<p>控制台输出的是nil.(⊙o⊙)…,可能是因为这个<strong>contentView</strong>在这个时候还没有被初始化吧.没关系,我们尝试下一个:<strong>initWithIcon:message:parentWindow:duration</strong>和<strong>initWithIcon:message:controlView:duration:</strong> ,因为你已经了解,内存中已经存在<strong>DVTBezelAlertPanel</strong>类的实例了,这意味着这两个初始化方法,已经被调用过了.你需要给这两个方法添加<strong>调试断点</strong>,因为我们没有它的实现文件,所以这里我们用LLDB控制台来添加断点.然后再次触发这个类的初始化.<br>父xcode依然停留在断点出,输入以下命令</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(lldb) rb <span class="string">'DVTBezelAlertPanel\ initWithIcon:message:'</span></span><br><span class="line">Breakpoint <span class="number">1</span>: <span class="number">2</span> locations.</span><br><span class="line">(lldb) br l</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>yohunl备注:在xcode7.2.1中,显示的是<br>  <figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  (lldb) rb <span class="string">'DVTBezelAlertPanel\ initWithIcon:message:'</span></span><br><span class="line">Breakpoint <span class="number">2</span>: <span class="number">4</span> locations.</span><br><span class="line">(lldb) br l</span><br><span class="line">........</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这个正则表达式形式的断点将会给上面的两个初始化方法都添加一个断点,这是因为两个方法都有一个相同的起始字符,正则表达式将匹配它们两个.别忘记上面正则表达式中空格前的<strong>\</strong>符号,还有就是用单引号’来包含整个表达式,这样LLDB才知道怎么解析它</p>
+<p>切换到子xcode,重新编译子工程(ctrl+B).父xcode将会命中<strong>initWithIcon:message:parentWindow:duration</strong>断点<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_14.png" alt="duandian.png"><br>如果没有命中断点,检查一下,是不是将断点设在父xcode中(假如你设在子xcode中,当然不起作用呀),是不是在子xcode中编译了一个工程.,因为找不到相应的源码文件,xcode将会断点在方法的汇编代码中.</p>
+<p>现在,你在没有源代码的情况下,断点进入了一个方法.你需要一个方式来打印出传递给该方法的参数.是时候让我们谈一谈..汇编了…:]<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_15.png" alt="AssemblyRage-700x328-2.png"></p>
+<h2 id="u6C47_u7F16_u4E4B_u65C5"><a href="#u6C47_u7F16_u4E4B_u65C5" class="headerlink" title="汇编之旅"></a>汇编之旅</h2><hr>
+<p>当你面对私有api的时候,你要做的往往是分析寄存器(registers ),而不是像在拥有源码情况下的调试一样使用调试符号(debug symbols ).了解寄存器(registers)在x86-64架构下的行为,将会给你提供很多的帮助</p>
+<p>尽管不是一篇必读文章,<a href="https://mikeash.com/pyblog/friday-qa-2011-12-16-disassembling-the-assembly-part-1.html" target="_blank" rel="external">这篇文章</a>是一篇非常好的关于x86 Mach-0 汇编的文章.在本教程的第三部分,你将会通过方法的部分反汇编代码去了解方法到底是做什么的.不过现在,你需要的只是简单的了解.</p>
+<p>以下的寄存器和其是怎样工作的,值得你关注:</p>
+<ul>
+<li><strong>$rdi</strong>:这个寄存器代表传递给方法的参数<strong>self</strong>,这也是第一个传递的参数.</li>
+<li><strong>$rsi</strong>:表示<strong>Selector</strong>,这是传递给的第二个参数</li>
+<li><strong>$rdx</strong>:传递给函数的第三个参数,也是我们看到的Objective-C的第一个参数(因为self和Selector是隐含的参数)</li>
+<li><strong>$rcx</strong>:传递给函数的第四个参数,也是我们看到的Objective-C的第2个参数(因为self和Selector是隐含的参数)</li>
+<li><strong>$r8</strong>:传递给函数的第五个参数.如果需要传递更多的参数,<strong>$r9</strong>将会作为跟随之后的第6个参数的栈帧</li>
+<li><strong>$rax</strong>:函数的返回值存放在此寄存器中.例如,当我们执行完方法<strong>–[aClass description]</strong>,<strong>$rax</strong>将会存放<strong>aClass</strong>对象的描述<strong>NSString</strong>.</li>
+</ul>
+<blockquote>
+<p>注意:以上描述的不是绝对的.在某些二进制中,会使用不同的寄存器来存放不同类型的参数,例如:<strong>doubles</strong>使用<strong>$xmm</strong>寄存器组.上面的只是作为一个快速的参考!</p>
+</blockquote>
+<p>下面我们采用以下的方法,来将上述的理论运用到实践中来</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">aClass</span> : <span class="title">NSObject</span></span></span><br><span class="line">- (<span class="built_in">NSString</span> *)aMethodWithMessage:(<span class="built_in">NSString</span> *)message;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">aClass</span> </span></span><br><span class="line"> </span><br><span class="line">- (<span class="built_in">NSString</span> *)aMethodWithMessage:(<span class="built_in">NSString</span> *)message &#123;</span><br><span class="line">  <span class="keyword">return</span> [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"Hey the message is: %@"</span>, message]; </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>使用如下的代码来执行它:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aClass *aClassInstance = [[aClass alloc] init];</span><br><span class="line">[aClassInstance aMethodWithMessage:<span class="string">@"Hello World"</span>];</span><br></pre></td></tr></table></figure>
+<p>编译后,对方法<strong>aMethodWithMessage</strong>的调用将会由Runtime层准换为对<strong>objc_msgSend</strong>的调用,基本上类似于如下:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend(aClassInstance, <span class="keyword">@selector</span>(aMethodWithMessage:), <span class="string">@"Hello World"</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>aClass</strong>的方法<strong>aMethodWithMessage</strong>调用,会使得一些寄存机的内容被改变:<br><strong>调用方法aMethodWithMessage前</strong></p>
+<ul>
+<li>$rdi: 存放<strong>aClass</strong>类型的一个实例变量</li>
+<li><strong>$rsi</strong>:存放SEL类型的<strong>aMethodWithMessage:</strong>,实际上它是一个<strong>chra * </strong>类型的字符串(可以通过在lldb中 输入 po (SEL)$rsi来验证)</li>
+<li><strong>$rdx</strong>:包含传递给方法的<strong>message</strong>,此处,是一个字符串<strong> @”Hello World” </strong><br><strong>当调用方法结束后</strong></li>
+<li><strong>$rax</strong>:存放方法执行后的返回值,在此处是一个NSString.在这个特定的例子中,存放的是字符串<strong>@”Hey the message is: Hello World”</strong></li>
+</ul>
+<h2 id="x86_u5BC4_u5B58_u5668"><a href="#x86_u5BC4_u5B58_u5668" class="headerlink" title="x86寄存器"></a>x86寄存器</h2><hr>
+<p>通过以上的内容,你已经有了一份寄存器指南了,是时候,重新审视DVTBezelAlertPanel的初始化方法<strong>initWithIcon:message:parentWindow:duration:</strong>了.希望你的父xcode的断点还停留在此方法处.当然,如果不是,也没关系,重新运行子xcode,再次停留在父类的断点<strong>initWithIcon:message:parentWindow:duration:</strong>处.记住,你是在寻找将类DVTBezelAlertPanel和显示xcode的编译成功/失败提示框之间的线索.</p>
+<p>当程序断点在<strong>initWithIcon:message:parentWindow:duration</strong>处,在LLDB控制台输入以下内容</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) re re</span><br></pre></td></tr></table></figure>
+<p>这条命令是<strong>register read</strong>的缩写,它是用来输出当前你机器上可见的重要寄存器内容的命令.</p>
+<p>运用你所学到的关于x86寄存器的知识,去查看哪个寄存器是用来存放<strong>message</strong>参数的和objc_msgSend方法的第四个参数.是否这个内容就是我们所希望得到的警示框的提示内容呢?(原文中,以下的列表是隐藏的,你可以点击展示它,作者鼓励大家自己先找找看,如果找不到,再打开下面的这个提示,由于我使用的markdown编辑器的限制,做不到这点,所以此处直接放出来了)</p>
+<blockquote>
+<p>是的,你应该查看寄存器<strong>$rcx</strong>,你将会看到,它的内容就是<strong>message</strong>参数的内容,也就是显示在xcode的编译提示框中的提示信息<br>  输入以下命令来进一步深入了解:<br>  <figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po <span class="variable">$rcx</span> </span><br><span class="line">Build Failed</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>  <em>注意:xcode输出寄存器内容是采用默认的<strong>AT&amp;T</strong>汇编格式的,在这种格式中,源操作符和目标操作符的位置是交换过的,意思是AT&amp;T语法第一个为源操作数，第二个为目的操作数，方向从左到右,这个同Intel的汇编格式是相反的 </em>,关于AT&amp;T汇编,可以参考<a href="http://blog.csdn.net/bigloomy/article/details/6581754" target="_blank" rel="external">http://blog.csdn.net/bigloomy/article/details/6581754</a><br>  看起来这个就是我们要找的寄存器呀</p>
+<p>试着更改<strong>$rcx</strong>的内容为一个新的字符串,看看是不是警示框的内容改变了:</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po [<span class="variable">$rcx</span> class]</span><br><span class="line">__NSCFConstantString//我的xcode7.<span class="number">2.1</span>上输出显示的是 __NSCFString</span><br><span class="line"> </span><br><span class="line">(lldb) po id <span class="variable">$a</span> = <span class="variable">@"</span>Womp womp!<span class="string">"; </span><br><span class="line">(lldb) p/x <span class="variable">$a</span> </span><br><span class="line">(id) <span class="variable">$a</span> = 0x000061800203faa0 //yohunl备注,这里是上一句p/x <span class="variable">$a</span>的输出,在我的xcode7.2.1上,输出的是(__NSCFString *) <span class="variable">$a</span> = 0x00006080026379c0 <span class="variable">@"</span>Womp womp!"</span>,在你的机子上输出的地址也很可能是不一样的,下一句中的地址要换成你机子上本处显示的地址值</span><br><span class="line">(lldb) re w <span class="variable">$rcx</span> <span class="number">0x000061800203faa0</span></span><br><span class="line">(lldb) c</span><br></pre></td></tr></table></figure>
+<p><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_16.png" alt="Womp_Womp_Xcode-700x275.png"></p>
+<p>应用程序将恢复运行.注意观察显示的编译成功/失败的提示框的内容是不是变成了我们修改的字符串.你将会看到,它的确是变成了我们设置的新字符串,这也验证了我们的假定- <strong>DVTBezelAlertPanel</strong>就是用来显示这个提示信息的.</p>
+<h2 id="u4EE3_u7801_u6CE8_u5165_28Injection_29"><a href="#u4EE3_u7801_u6CE8_u5165_28Injection_29" class="headerlink" title="代码注入(Injection)"></a>代码注入(Injection)</h2><hr>
+<p>你已经找到了你所需要的类,是时候,我们通过代码注入来扩展<strong>DVTBezelAlertPanel</strong>的行为,在编译提示框中展示lovely Rayrolling(人名)的头像.</p>
+<p>我们采用的是 <a href="http://nshipster.com/method-swizzling/" target="_blank" rel="external">metthod swizzling</a>技术</p>
+<p>你可能要swizzle来自很多不同的类的大量的方法,所以最佳建议是创建一个<strong>NSObject</strong>的<strong>category</strong>,在其中提供一个便捷的方法,来建立所有的swizzle逻辑.</p>
+<p>在xocde中,选择<strong>File\New\File…</strong>,然后选择 <strong>OS X\Source\Objective-C File</strong>,建立名称为<strong>MethodSwizzler</strong>的文件,确保它的形式是NSObject的category.</p>
+<p>打开<strong>NSObject+MethodSwizzler.m</strong>,将其替换成如下的代码:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#import <span class="title">"NSObject+MethodSwizzler.h"</span></span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="preprocessor">#import <span class="title">&lt;objc/runtime.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span> (<span class="title">MethodSwizzler</span>)</span></span><br><span class="line"> </span><br><span class="line">+ (<span class="keyword">void</span>)swizzleWithOriginalSelector:(SEL)originalSelector swizzledSelector:(SEL) swizzledSelector isClassMethod:(<span class="built_in">BOOL</span>)isClassMethod </span><br><span class="line">&#123;</span><br><span class="line">  Class cls = [<span class="keyword">self</span> class];</span><br><span class="line"> </span><br><span class="line">  Method originalMethod;</span><br><span class="line">  Method swizzledMethod;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">if</span> (isClassMethod) &#123;</span><br><span class="line">    originalMethod = class_getClassMethod(cls, originalSelector);</span><br><span class="line">    swizzledMethod = class_getClassMethod(cls, swizzledSelector);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">    originalMethod = class_getInstanceMethod(cls, originalSelector);</span><br><span class="line">    swizzledMethod = class_getInstanceMethod(cls, swizzledSelector);</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  <span class="keyword">if</span> (!originalMethod) &#123; </span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"Error: originalMethod is nil, did you spell it incorrectly? %@"</span>, originalMethod);</span><br><span class="line">    <span class="keyword">return</span>; </span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 4</span></span><br><span class="line">  method_exchangeImplementations(originalMethod, swizzledMethod); </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>其中的关键代码都加了序号,下面一一解释:</p>
+<ol>
+<li>这是是使用method swizzle所需要的头文件</li>
+<li><strong>isClassMethod</strong>指示,这个方法是实例方法还是类方法</li>
+<li>如果不借助于编译器的方法提示,那很容易拼错上述的方法.这段代码是用来检查的,确保你的拼写是正确的</li>
+<li>这个是关键函数,用来交换方法的实现的</li>
+</ol>
+<p>在头文件NSObject+MethodSwizzler.h中添加方法<strong>swizzleWithOriginalSelector:swizzledSelector:isClassMethod</strong>的声明,如下所示:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#import <span class="title">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">MethodSwizzler</span>)</span></span><br><span class="line">+ (<span class="keyword">void</span>)swizzleWithOriginalSelector:(SEL)originalSelector swizzledSelector:(SEL) swizzledSelector isClassMethod:(<span class="built_in">BOOL</span>)isClassMethod;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>接下来,就可以完成实际的swizzle了.创建一个新的名为Rayrolling_DVTBezelAlertPanel的category,这个category同样是NSObject的category.<br>替换创建的<strong>NSObject+Rayrolling_DVTBezelAlertPanel.m</strong>的代码为如下代码</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#import <span class="title">"NSObject+Rayrolling_DVTBezelAlertPanel.h"</span> </span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="preprocessor">#import <span class="title">"NSObject+MethodSwizzler.h"</span></span></span><br><span class="line"><span class="preprocessor">#import <span class="title">&lt;Cocoa/Cocoa.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> ()</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">- (<span class="keyword">id</span>)initWithIcon:(<span class="keyword">id</span>)arg1 message:(<span class="keyword">id</span>)arg2 parentWindow:(<span class="keyword">id</span>)arg3 duration:(<span class="keyword">double</span>)arg4;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span> (<span class="title">Rayrolling_DVTBezelAlertPanel</span>)</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 5</span></span><br><span class="line">+ (<span class="keyword">void</span>)load</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 6</span></span><br><span class="line">  <span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 7</span></span><br><span class="line">    [<span class="built_in">NSClassFromString</span>(<span class="string">@"DVTBezelAlertPanel"</span>) swizzleWithOriginalSelector:<span class="keyword">@selector</span>(initWithIcon:message:parentWindow:duration:) swizzledSelector:<span class="keyword">@selector</span>(Rayrolling_initWithIcon:message:parentWindow:duration:) isClassMethod:<span class="literal">NO</span>];</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 8</span></span><br><span class="line">- (<span class="keyword">id</span>)Rayrolling_initWithIcon:(<span class="keyword">id</span>)icon message:(<span class="keyword">id</span>)message parentWindow:(<span class="keyword">id</span>)window duration:(<span class="keyword">double</span>)duration</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 9</span></span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"Swizzle success! %@"</span>, <span class="keyword">self</span>);</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 10</span></span><br><span class="line">  <span class="keyword">return</span> [<span class="keyword">self</span> Rayrolling_initWithIcon:icon message:message parentWindow:window duration:duration];</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码比较简单,我们来分析:</p>
+<ol>
+<li>引入用来swizzling的头文件</li>
+<li>前向声明所有你打算使用到的方法.虽然这不是必须的,但是这个使得编译器能够智能感知完成你的代码,另外,这也消除了编译器提示的找不到方法声明的警告</li>
+<li>这是你实际上需要swizzle的方法</li>
+<li>因为我们不想重新声明一个私有类,替代的方式是声明一个category.</li>
+<li>这个方法是触发代码注入的地方.你应该将代码注入都放到<strong>load</strong>中.这个<strong>load</strong>是唯一的一个”一对多关系”的方法,也就是说,多个category都有load方法,那么所有的category的load方法都能够得到执行</li>
+<li>因为<strong>load</strong>可能会被多次执行,所以,使用<strong>dispatch_once</strong>确保只执行一次</li>
+<li>swizzle前面声明的方法为你自己的实现.当然了,其中使用了<strong>NSClassFromString</strong>来动态的获取内存中的类!</li>
+<li>这是你写的用来取代原来的方法的方法,建议是它采用独特的命令方式,这样从名字立马知道它是做什么的</li>
+<li>输出一下,确保swizzle成功了</li>
+<li>因为你已经swizzle了原始的方法,那么你调用swizzled后的方法(此处是[self Rayrolling_initWithIcon:icon message:message parentWindow:window duration:duration];),它将会调用的是原来的方法.这意味着你在原来的方法执行之前或者之后,添加任何你想要的代码,甚至是更改传递给原始方法的参数…当然了,这里你已经在这么做了</li>
+</ol>
+<p>祝贺你,你已经成功的注入代码到一个私有类的私有方法中了!编译父xcode,然后在子xcode中编译运行一个工程,查看父xcode的控制台输出,看是不是成功的wswizzled了.</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Swizzle success! &lt;DVTBezelAlertPanel: <span class="number">0x11e42d300</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>接下来,你就可以替换编译成功/失败的提示框上的图标为Rayrolling头像啦.从这里下载头像资源<a href="http://www.raywenderlich.com/wp-content/uploads/2015/04/IDEAlertBezel_Generic_Rayrolling.pdf" target="_blank" rel="external">Crispy from here</a>,然后添加到工程中来,确保选择了 <strong>Copy Items if Needed.</strong></p>
+<p>现在,导航到方法<strong>Rayrolling_initWithIcon:message:parentWindow:duration</strong>,将其代码改为:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)Rayrolling_initWithIcon:(<span class="keyword">id</span>)arg1 message:(<span class="keyword">id</span>)arg2 parentWindow:(<span class="keyword">id</span>)arg3 duration:(<span class="keyword">double</span>)arg4 </span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (arg1) &#123;  </span><br><span class="line">    <span class="built_in">NSBundle</span> *bundle = [<span class="built_in">NSBundle</span> bundleWithIdentifier:<span class="string">@"com.raywenderlich.Rayrolling"</span>];</span><br><span class="line">    <span class="built_in">NSImage</span> *newImage = [bundle imageForResource:<span class="string">@"IDEAlertBezel_Generic_Rayrolling.pdf"</span>];</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> Rayrolling_initWithIcon:newImage message:arg2 parentWindow:arg3 duration:arg4];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> [<span class="keyword">self</span> Rayrolling_initWithIcon:arg1 message:arg2 parentWindow:arg3 duration:arg4];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法首先检查是否一个图片参数被传递给了原方法,然后将其替换成我们自定义的图片.注意:此处你是使用<strong>[NSBundle bundleWithIdentifier:@”com.raywenderlich.Rayrolling”];</strong>来加载图片的,这是因为xcode的<strong>MainBundle</strong>并不包含我们的资源.</p>
+<p>重新编译父xcode,然后在子xcode中编译一个工程,你会看到<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin1_17.png" alt="Xcode_Alert_Closeup.png"></p>
+<h2 id="u6DFB_u52A0_u4E00_u4E2A_u5F00_u5173_u548C_u6301_u4E45_u5316"><a href="#u6DFB_u52A0_u4E00_u4E2A_u5F00_u5173_u548C_u6301_u4E45_u5316" class="headerlink" title="添加一个开关和持久化"></a>添加一个开关和持久化</h2><hr>
+<p>你设计这个plugin是用来娱乐用的,所以你肯定需要一个开关,让它起作用或者不起作用.我们通过<strong>NSUserDefaults</strong>来持久化存放使它起作用或者不起作用的变量</p>
+<p>导航到<strong>Rayrolling.h </strong>,添加如下代码</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">BOOL</span>)isEnabled;</span><br></pre></td></tr></table></figure>
+<p>在<strong>Rayrolling.m</strong>文件中添加</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">BOOL</span>)isEnabled &#123;</span><br><span class="line">  <span class="keyword">return</span> [[<span class="built_in">NSUserDefaults</span> standardUserDefaults] boolForKey:<span class="string">@"com.raywenderlich.Rayrolling.shouldbeEnable"</span>];</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">+ (<span class="keyword">void</span>)setIsEnabled:(<span class="built_in">BOOL</span>)shouldBeEnabled &#123;</span><br><span class="line">  [[<span class="built_in">NSUserDefaults</span> standardUserDefaults] setBool:shouldBeEnabled forKey:<span class="string">@"com.raywenderlich.Rayrolling.shouldbeEnable"</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你已经有了持久化你的选择的逻辑,下面是将它关联到GUI上去<br>回到<strong>Rayrolling.m</strong>中,修改<strong>-(void)doMenuAction</strong>的代码为下面的:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)doMenuAction:(<span class="built_in">NSMenuItem</span> *)menuItem &#123;</span><br><span class="line">  [Rayrolling setIsEnabled:![Rayrolling isEnabled]];</span><br><span class="line">  menuItem<span class="variable">.title</span> = [Rayrolling isEnabled] ? <span class="string">@"Disable Rayrolling"</span> : <span class="string">@"Enable Rayrolling"</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是个用来切换的bool值,启用或者禁用Rayrolling</p>
+<p>最后,更改在<strong>didApplicationFinishLaunchingNotification:</strong>中的菜单项的初始化代码,改为如下:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSMenuItem</span> *menuItem = [[<span class="built_in">NSApp</span> mainMenu] itemWithTitle:<span class="string">@"Edit"</span>];</span><br><span class="line"><span class="keyword">if</span> (menuItem) &#123;</span><br><span class="line">  [[menuItem submenu] addItem:[<span class="built_in">NSMenuItem</span> separatorItem]];</span><br><span class="line">  <span class="built_in">NSString</span> *title = [Rayrolling isEnabled] ? <span class="string">@"Disable Rayrolling"</span> : <span class="string">@"Enable Rayrolling"</span>;</span><br><span class="line">  <span class="built_in">NSMenuItem</span> *actionMenuItem = [[<span class="built_in">NSMenuItem</span> alloc] initWithTitle:title action:<span class="keyword">@selector</span>(doMenuAction:) keyEquivalent:<span class="string">@""</span>];</span><br><span class="line">  [actionMenuItem setTarget:<span class="keyword">self</span>];</span><br><span class="line">  [[menuItem submenu] addItem:actionMenuItem];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个菜单项将会保留你选择的是否启用的逻辑,即使xcode重启后也没关系,因为你的选择已经持久化存储了.</p>
+<p>导航到文件<strong>NSObject+Rayrolling_DVTBezelAlertPanel.m</strong>,添加一行头文件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#import <span class="title">"Rayrolling.h"</span></span></span><br></pre></td></tr></table></figure>
+<p>最后,打开方法<strong>Rayrolling_initWithIcon:message:parentWindow:duration:</strong>,将</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (arg1) &#123;</span><br></pre></td></tr></table></figure>
+<p>替换为</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ([Rayrolling isEnabled] &amp;&amp; arg1) &#123;</span><br></pre></td></tr></table></figure>
+<p>构建并运行程序,以便更改插件的行为.</p>
+<p>现在,你创建了一个可以用来改变xcode编译成功/失败提示框图标和内容的插件,并且它还是能够被选择是否打开.这一天的工作成果相当不错,难道不是吗?😄</p>
+<h2 id="u63A5_u4E0B_u6765_u505A_u4EC0_u4E48_3F"><a href="#u63A5_u4E0B_u6765_u505A_u4EC0_u4E48_3F" class="headerlink" title="接下来做什么?"></a>接下来做什么?</h2><hr>
+<p>你可以从这里 <a href="http://www.raywenderlich.com/wp-content/uploads/2015/05/Rayrolling_Part1_Final.zip" target="_blank" rel="external">下载完整的demo工程</a>.</p>
+<p>你已经取得了很大的进步,但是依然有很多事情要做!在本教程的第二部分,你将会学习到DTrace基本知识,并且深入到一些LLDB的高级特性,诸如查找正在运行的进程,比如正在运行的xcode进程.</p>
+<p>如果你想更进一步,那么在你前往教程3之前,你还有一些工作要做.在教程3中,你将会看到大量的汇编代码.确保在这之前,你已经开始了解了相关的x86_64汇编知识,这里有2篇Mike Ash的介绍分析汇编的系列文章 <a href="https://www.mikeash.com/pyblog/friday-qa-2011-12-16-disassembling-the-assembly-part-1.html" target="_blank" rel="external">文章1</a>,<a href="https://www.mikeash.com/pyblog/friday-qa-2011-12-23-disassembling-the-assembly-part-2.html" target="_blank" rel="external">文章2</a>,可以给你提供相关的帮助.</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/03/07/createXcodePlugin1-3/">createXcodePlugin1/3</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Yohunl 的个人博客">Yohunl</a></p>
+        <p><span>发布时间:</span>2016年03月07日 - 08时12分</p>
+        <p><span>最后更新:</span>2016年03月07日 - 09时12分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/03/07/createXcodePlugin1-3/" title="createXcodePlugin1/3">http://yoursite.com/2016/03/07/createXcodePlugin1-3/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/03/07/createXcodePlugin1-3/　　作者: Yohunl" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/03/01/iOS中的正则表达式/">
+                    iOS中的正则表达式
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u5F00_u59CB"><span class="toc-number">1.</span> <span class="toc-text">开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u5B89_u88C5_u63D2_u4EF6_u7BA1_u7406_u63D2_u4EF6_Alcatraz"><span class="toc-number">2.</span> <span class="toc-text">安装插件管理插件  Alcatraz</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hello_World_u63D2_u4EF6_u6A21_u677F"><span class="toc-number">3.</span> <span class="toc-text">Hello World插件模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u627E_u5230_u6211_u4EEC_u8981_u4FEE_u6539_u7684xcode_u7684_u67D0_u9879_u7279_u6027"><span class="toc-number">4.</span> <span class="toc-text">找到我们要修改的xcode的某项特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u67E5_u627E_u548C_u76D1_u6D4B_u7F16_u8BD1_u7684_u63D0_u793A_u6846"><span class="toc-number">5.</span> <span class="toc-text">查找和监测编译的提示框</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6C47_u7F16_u4E4B_u65C5"><span class="toc-number">6.</span> <span class="toc-text">汇编之旅</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#x86_u5BC4_u5B58_u5668"><span class="toc-number">7.</span> <span class="toc-text">x86寄存器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u4EE3_u7801_u6CE8_u5165_28Injection_29"><span class="toc-number">8.</span> <span class="toc-text">代码注入(Injection)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6DFB_u52A0_u4E00_u4E2A_u5F00_u5173_u548C_u6301_u4E45_u5316"><span class="toc-number">9.</span> <span class="toc-text">添加一个开关和持久化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u63A5_u4E0B_u6765_u505A_u4EC0_u4E48_3F"><span class="toc-number">10.</span> <span class="toc-text">接下来做什么?</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/03/07/createXcodePlugin1-3/" data-title="createXcodePlugin1/3" data-url="http://yoursite.com/2016/03/07/createXcodePlugin1-3/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yohunl"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/03/01/iOS中的正则表达式/" title="下一篇: iOS中的正则表达式">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/createXcodePlugin1-3/">createXcodePlugin1/3</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/01/iOS中的正则表达式/">iOS中的正则表达式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/01/xcode7-插件制作入门/">xcode7 插件制作入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/06/在github上搭建hexo静态博客/">在github上搭建hexo静态博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/06/NSTimer和实现弱引用的timer的方式/">NSTimer和实现弱引用的timer的方式</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 Yohunl
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的静态博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减双栏 Hexo 博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
