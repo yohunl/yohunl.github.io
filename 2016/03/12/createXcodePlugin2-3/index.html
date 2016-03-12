@@ -5,26 +5,18 @@
   
   <title>怎样创建一个xcode插件 第2部分/3部分 | yohunl&#39;s iOS blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="plugin
-插件
-
-
-本文翻译自 https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2
+  <meta name="description" content="本文翻译自 https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2
 原作者：Derek Selander
 译者：@yohunl
-译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.">
+译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.这些技能不单单只是用来创">
 <meta property="og:type" content="article">
 <meta property="og:title" content="怎样创建一个xcode插件 第2部分/3部分">
 <meta property="og:url" content="http://yoursite.com/2016/03/12/createXcodePlugin2-3/index.html">
 <meta property="og:site_name" content="yohunl's iOS blog">
-<meta property="og:description" content="plugin
-插件
-
-
-本文翻译自 https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2
+<meta property="og:description" content="本文翻译自 https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2
 原作者：Derek Selander
 译者：@yohunl
-译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.">
+译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.这些技能不单单只是用来创">
 <meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_1.png">
 <meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_2.png">
 <meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_3.png">
@@ -34,17 +26,13 @@
 <meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_7.gif">
 <meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_8.gif">
 <meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_9.png">
-<meta property="og:updated_time" content="2016-03-12T04:57:03.000Z">
+<meta property="og:updated_time" content="2016-03-12T05:32:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="怎样创建一个xcode插件 第2部分/3部分">
-<meta name="twitter:description" content="plugin
-插件
-
-
-本文翻译自 https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2
+<meta name="twitter:description" content="本文翻译自 https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2
 原作者：Derek Selander
 译者：@yohunl
-译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.">
+译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.这些技能不单单只是用来创">
   
     <link rel="alternative" href="/atom.xml" title="yohunl&#39;s iOS blog" type="application/atom+xml">
   
@@ -171,7 +159,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/NSRegularExpression/" style="font-size: 10px;">NSRegularExpression</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/plugin/" style="font-size: 10px;">plugin</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/定时器/" style="font-size: 10px;">定时器</a> <a href="/tags/插件/" style="font-size: 20px;">插件</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/静态/" style="font-size: 10px;">静态</a>
+                        <a href="/tags/NSRegularExpression/" style="font-size: 10px;">NSRegularExpression</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/plugin/" style="font-size: 15px;">plugin</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/定时器/" style="font-size: 10px;">定时器</a> <a href="/tags/插件/" style="font-size: 20px;">插件</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/静态/" style="font-size: 10px;">静态</a>
                     </div>
                 </section>
                 
@@ -274,6 +262,10 @@
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/plugin/">plugin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/插件/">插件</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -281,12 +273,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <ul>
-<li>plugin</li>
-<li>插件</li>
-</ul>
-<hr>
-<p>本文翻译自 <a href="https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2" target="_blank" rel="external">https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2</a></p>
+        <p>本文翻译自 <a href="https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2" target="_blank" rel="external">https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2</a></p>
 <p>原作者：<a href="https://www.raywenderlich.com/u/lolgrep" target="_blank" rel="external">Derek Selander</a></p>
 <p>译者：<a href="http://weibo.com/yohunl" target="_blank" rel="external">@yohunl</a></p>
 <p>译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.这些技能不单单只是用来创建插件,对你平时的调试等,也有非常大的帮助.</p>
@@ -426,7 +413,7 @@
         <p><span>本文标题:</span><a href="/2016/03/12/createXcodePlugin2-3/">怎样创建一个xcode插件 第2部分/3部分</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 Yohunl 的个人博客">Yohunl</a></p>
         <p><span>发布时间:</span>2016年03月12日 - 11时28分</p>
-        <p><span>最后更新:</span>2016年03月12日 - 12时57分</p>
+        <p><span>最后更新:</span>2016年03月12日 - 13时32分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/03/12/createXcodePlugin2-3/" title="怎样创建一个xcode插件 第2部分/3部分">http://yoursite.com/2016/03/12/createXcodePlugin2-3/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/03/12/createXcodePlugin2-3/　　作者: Yohunl" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
