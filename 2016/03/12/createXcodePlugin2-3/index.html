@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>怎样创建一个xcode插件 第2部分/3部分 | yohunl&#39;s iOS blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="plugin
+插件
+
+
+本文翻译自 https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2
+原作者：Derek Selander
+译者：@yohunl
+译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎样创建一个xcode插件 第2部分/3部分">
+<meta property="og:url" content="http://yoursite.com/2016/03/12/createXcodePlugin2-3/index.html">
+<meta property="og:site_name" content="yohunl's iOS blog">
+<meta property="og:description" content="plugin
+插件
+
+
+本文翻译自 https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2
+原作者：Derek Selander
+译者：@yohunl
+译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_1.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_2.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_3.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_4.png">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_5.gif">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_6.gif">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_7.gif">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_8.gif">
+<meta property="og:image" content="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_9.png">
+<meta property="og:updated_time" content="2016-03-12T04:57:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="怎样创建一个xcode插件 第2部分/3部分">
+<meta name="twitter:description" content="plugin
+插件
+
+
+本文翻译自 https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2
+原作者：Derek Selander
+译者：@yohunl
+译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.">
+  
+    <link rel="alternative" href="/atom.xml" title="yohunl&#39;s iOS blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" type="text/css">
+  
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <script>
+      var yiliaConfig = {
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/avatar.png" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/">Yohunl</a></h1>
+        </hgroup>
+
+        
+                
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/yohunl@163.com" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/yohunl" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yohunl" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/NSRegularExpression/" style="font-size: 10px;">NSRegularExpression</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/plugin/" style="font-size: 10px;">plugin</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a> <a href="/tags/博客/" style="font-size: 10px;">博客</a> <a href="/tags/定时器/" style="font-size: 10px;">定时器</a> <a href="/tags/插件/" style="font-size: 20px;">插件</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/静态/" style="font-size: 10px;">静态</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://yohunl.github.com/">GitHub</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于移动端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Yohunl</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/avatar.png" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Yohunl</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <li id="Email"><a class="Email" target="_blank" href="/yohunl@163.com" title="Email"></a></li>
+                            
+                                <li id="新浪微博"><a class="新浪微博" target="_blank" href="http://weibo.com/yohunl" title="新浪微博"></a></li>
+                            
+                                <li id="GitHub"><a class="GitHub" target="_blank" href="https://github.com/yohunl" title="GitHub"></a></li>
+                            
+                                <li id="RSS"><a class="RSS" target="_blank" href="/atom.xml" title="RSS"></a></li>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-createXcodePlugin2-3" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/12/createXcodePlugin2-3/" class="article-date">
+      <time datetime="2016-03-12T03:28:37.000Z" itemprop="datePublished">2016-03-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      怎样创建一个xcode插件 第2部分/3部分
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <ul>
+<li>plugin</li>
+<li>插件</li>
+</ul>
+<hr>
+<p>本文翻译自 <a href="https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2" target="_blank" rel="external">https://www.raywenderlich.com/97756/creating-an-xcode-plugin-part-2</a></p>
+<p>原作者：<a href="https://www.raywenderlich.com/u/lolgrep" target="_blank" rel="external">Derek Selander</a></p>
+<p>译者：<a href="http://weibo.com/yohunl" target="_blank" rel="external">@yohunl</a></p>
+<p>译者注:原文使用的是xcode6.3.2,我翻译的时候,使用的是xcode7.2.1,经过验证,本部分中说的依然是有效的.在文中你可以学习到一系列的技能,非常值得一看.这些技能不单单只是用来创建插件,对你平时的调试等,也有非常大的帮助.</p>
+<p>欢迎你来到创建xcode插件教程的第二部分.在<a href="http://yohunl.com/2016/03/07/createXcodePlugin1-3/" target="_blank" rel="external">第一部分</a>中,你已经了解了怎么通过<code>NSNotification</code>来窥探xcode的内部类,并且代码注入了其私有类<code>DVTBezelAlertPanel</code>,并且,你还添加了一个<code>NSMenuItem</code>菜单到xcode的菜单栏里,通过它来持久化是否开启我们自定义的插件<code>Rayrolling</code>的功能</p>
+<p>在这个教程中,你会在第一部分中创建的<code>Rayrolling</code>的基础上继续向前,如果你并没有在这之前阅读第一部分或者你想从本处开始,你可以<a href="http://www.raywenderlich.com/wp-content/uploads/2015/05/Rayrolling_Part1_Final.zip" target="_blank" rel="external">下载第一部分完成的demo</a>.本章中,你将会通过深入了解一些可用的工具来进一步探索Xcode,利用你将会学到的新知识,来修改Xcode的标题栏,使标题栏改为展示Ray的某首歌的歌词<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_1.png" alt="Plugin_Swizzled_Titlebar1-700x56.png"></p>
+<h2 id="u5F00_u59CB_u5566"><a href="#u5F00_u59CB_u5566" class="headerlink" title="开始啦"></a>开始啦</h2><hr>
+<p>打开Xcode和Terminal(终端),并且将它俩都平铺在桌面上,这样你可以同时看到它们,方便后续的操作.(yohunl注:后文将会一面在Xcode上点击,一面观察终端控制台的输出,一旦发现我们需要的输出,就要立马停止终端控制台,所以,平铺在桌面上才便于你操作,否则,你就忙不过来啦)<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_2.png" alt="View_Organization-700x405.png"><br>因为从上一章,你已经学会了从xcode运行一个xcode实例来创建插件和调试插件,所以我们换一种新的方式:你将会直接通过终端命令来使用LLDB来探索Xcode,你不用再像第一部分那样从一个Xcode启动另一个调试用的Xcode实例来探索Xcode是怎样工作的了.<br><a id="more"></a></p>
+<h2 id="LLDB_u7684BFF_u548CDTrace"><a href="#LLDB_u7684BFF_u548CDTrace" class="headerlink" title="LLDB的BFF和DTrace"></a>LLDB的BFF和DTrace</h2><hr>
+<p>DTrace是最好的探索Xcode的工具之一,它是一款相当优秀的调试工具,它是<code>Instruments</code>的基石.只要你了解怎么使用它,你将会发现它是非常有用的工具.<br>首先,为了对其有个了解,我们需要一个使用<code>DTrace</code>的demo,就如同我们学习一门新语言时候,总是会通过一个<code>Hello World</code>demo一样.那么开始吧… 创建一个脚本,它是用来保持所有以<code>IDE</code>开头的类的运行计数,并在每次你调用该特定类方法或者实例方法时,增加计数.在你退出脚本时候,<code>DTrace</code>将会转储这些数据.<br>运行Xcode,然后,在<code>Terminal</code>的一个新窗口中,输入如下的脚本:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dtrace -n &#39;objc$target:IDE*::entry &#123; @[probemod] = count(); &#125;&#39;  -p `pgrep -xo Xcode`</span><br></pre></td></tr></table></figure></p>
+<p>虽然你键入命令后并不会看到任何的输出,但是DTrace已经在后台默默的生成了所有方法调用的踪迹(trace).回到Xcode,随便尝试一些操作.打开某些文件,随便做一些点击操作.回到Terminal,然后按<code>Ctrl+C</code>来结束脚本,脚本产生的内容将会输出到Terminal上 (只有在你<strong>Ctrl + C</strong>终止脚本后,才能在Terminal上看到脚本输出的内容)<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_3.png" alt="Dtrace_Hello_World-700x199.png"><br>相当酷吧:),其实使用Dtrace,你可以做到很多事,但是我们的教程不会覆盖你想了解的DTrace的全部,相反的,我们提供一个快速的Dtrace语法的概述,它将会帮助你开始:<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_4.png" alt="Dtrace_breakdown_v2-700x204.png"></p>
+<ul>
+<li><strong>Probe Description(探头说明,前序描述):</strong>由<strong>提供者(Provider)</strong>,<strong>模块(Module)</strong>,<strong>功能(Function)</strong>,<strong>名字(Name)</strong>组成,它们由冒号分隔.省略它们中的任何一个,将会使Probe Description包含所有的匹配项.你可以使用 * 和 ? 操作符来做模式匹配.<ul>
+<li>Provider:这个包含了一系列的类和方法,例如<strong>profile</strong>,<strong>fbt</strong>,或者<strong>io</strong>.在我们的教程中,主要使用<strong>objc</strong>来hookObjective-C的方法调用.</li>
+<li>Module:在OC语言中,这部分指示的是你希望观察的指定的类名</li>
+<li>Function:指示你希望观察的特定方法名</li>
+<li>Name:虽然根据你的Provider的不同,有不同的name值可选,但是你在此只需要使用<strong>entry</strong>或者<strong>retrun</strong>,来匹配函数的开始或者结束.<br>你要了解,你可以使用<strong>$target</strong>关键字来匹配进程ID,也可以使用<code>p</code>或者<code>c</code>标志来指定target.</li>
+</ul>
+</li>
+<li><strong>Predicate(谓词部分):</strong> 可选的表达式,它是用来过滤哪些动作是满足条件的.你可以把它当做一个if语句的条件部分.</li>
+<li><strong>Action(动作):</strong> 将要执行的操作.它可以只是简单的输出一些内容到控制台,也可以是执行一个高级功能.</li>
+</ul>
+<p>就如同LLDB的命令<code>image lookup -rn {Regex Query}</code>一样,你也可以使用<strong>l</strong>标志来转储(dump)特定进程中的类和方法.<br>为了演示这点,我们来看这样一个简单的例子,运行<strong>Safari</strong>,然后在终端输入以下脚本<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dtrace -ln &#39;objc$target::-*ecret*:entry&#39; -p `pgrep -xn Safari`</span><br></pre></td></tr></table></figure></p>
+<p>上述的DTrace脚本会打印出所有的名字中包含<strong>ecret</strong>字符串的实例方法.因为Probe Description部分 提供了Name参数<code>entry</code>,所有的方法都有<code>entry</code>和<code>return</code>,所以基本上忽略了所有的重复查询请求.</p>
+<blockquote>
+<p>注意:如果你想掌握更多的Dtarce知识,你可以参考<a href="https://www.bignerdranch.com/blog/hooked-on-dtrace-part-1/" target="_blank" rel="external">Big Nerd的文章</a>和 <a href="http://www.amazon.com/DTrace-Dynamic-Tracing-Solaris-FreeBSD/dp/0132091518/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1429691579&amp;sr=1-1&amp;keywords=dtrace" target="_blank" rel="external">这本Dtrace书籍</a>.如果并没有理解所有的这篇快速介绍中介绍的内容,也不需要沮丧,因为Dtrace是一个相当复杂的工具.</p>
+</blockquote>
+<p>现在你了解到Dtace的最基本的内容,我们可以开始使用它来寻找我们感兴趣的<strong>NSViews</strong>了.因为Xcode含有大量的Views,你会发现,使用LLDB来试图找出它们,让你不堪重负.即使结合LLDB的<strong>条件断点</strong>,调试一些应用程序都包含的共同东西,也是一个丑陋的过程.</p>
+<p>幸运的是,使用Dtrace,将能带给你对付此类问题的巨大的帮助.你将会使用DTrace来找出Xcode中组成标题栏的视图(NSViews).(⊙o⊙)…….那么该怎么做呢?</p>
+<p>这是一种方法:当鼠标停止在,或者点击一个NSView,<strong>hitTest:</strong>方法将会被触发,这个方法将会返回在这个鼠标点下最深的子视图.你可以使用DTrace来顺着<strong>hitTest:</strong>方法来确定视图,那个你应该进一步探索其其父视图和子视图的视图.</p>
+<p>在终端中输入以下脚本:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dtrace -qn &#39;objc$target:NSView:-hitTest?:return /arg1 != 0/ &#123; printf(&#34;UIView: 0x%x\n&#34;, arg1);  &#125;&#39; -p `pgrep -xo Xcode`</span><br></pre></td></tr></table></figure></p>
+<p>一旦这段脚本运行,请确定你的Xcode是第一响应者(通过在Xcode上任何地方点击一下即可成为第一响应者).在Xcode的窗口上移动你的鼠标指针,当你停止移动鼠标指针的时候,Dtrace将会输出一个内存地址多次,这是因为<strong> <code>hitTest:</code> </strong>被在视图层次上的多个视图调用.</p>
+<p>定位到Xcode的标题栏,点击标题栏.选择出现在终端中最近的地址,拷贝到你的粘贴板中</p>
+<p>打开一个新的终端窗口标签,运行LLDB,并将其附着到Xcode上,然后输出从DTrace中拷贝出的地址,像以下这样操作:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#62; lldb&#10;(lldb) pro attach -n Xcode&#10;... &#10;(lldb) po &#123;&#19978;&#19968;&#27493;&#25335;&#36125;&#21040;&#31896;&#36148;&#26495;&#20013;&#30340;&#23545;&#35937;&#22320;&#22336;,&#20363;&#22914;&#26159;0x7fcc2687cd40,&#21017;&#35813;&#21629;&#20196;&#26159; po 0x7fcc2687cd40&#125;&#10;...</span><br></pre></td></tr></table></figure></p>
+<p>其中,<strong>pro</strong> 是 <strong>progress</strong>的缩写,LLDB使用的是前序匹配原则,在不引起歧义的情况下 <strong>process</strong>,<strong>proc</strong>,<strong>proce</strong>都是可以的.在下面你还会看到 <strong>pro at -n Xcode</strong>这种写法,都是因为这个原则,都是等效的.<strong> pro attach -n Xcode </strong>,使用attach命令直接在LLDB中把一个正在运行的进程连接到LLDB中,以便于进行动态调试.也就是说这个命令直接可以将LLDB添加到任意的其它不是由它自己创建的进程中!!<br>你将会看到和以下相似的输出:<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_5.gif" alt="Dtrace_hitTest_2.gif"></p>
+<blockquote>
+<p>注意:现在,Xcode被我们通过终端输入的LLDB命令所暂停了.你可以在任何时候通过输入<strong>process interrupt</strong>或者其缩写<strong>pro i</strong>来暂停Xcode,从而能够开始调试Xcode.另外,你也可以通过在任何时候输入<strong>continue</strong>或者缩写<strong>c</strong>来恢复Xcode的运行.请确定你<strong>总是</strong>了解附着于Xcode上的LLDB的状态,你可以认为,当Xcode被你的调试LLDB所暂停时候,它是不能够相应你的单击等操作的(如同你在Xcode中打了断点,调试的时候进入到断点一样)</p>
+</blockquote>
+<p>取决于你在Xcode中点击的地方,你可能会命中一系列的视图.探索这些内存地址的<strong>父视图</strong>(通过在lldb中 po [对象地址  supview])或者<strong>子视图</strong>(po [对象地址 subvies]),直到你得到了视图<strong> IDEActivityView </strong></p>
+<p>一旦你找到了<strong>IDEActivityView</strong>,怎样确定这个视图就是你所希望找寻的视图呢?<br>通过在LLDB中输入以下命令:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po [&#123;&#25214;&#21040;&#30340;IDEActivityView&#23454;&#20363;&#30340;&#22320;&#22336;&#125; setHidden:YES]  &#22312;&#25105;&#30340;&#26426;&#23376;&#19978;&#26159;  po [0x7fcc2686b3c0 setHidden:YES]&#10;...&#36825;&#37324;&#30340;&#28857;&#34920;&#31034;&#25105;&#20204;&#30465;&#30053;&#20102;lldb&#30340;&#26576;&#20123;&#19981;&#37325;&#35201;&#30340;&#36755;&#20986;.&#10;(lldb) c&#10;...</span><br></pre></td></tr></table></figure></p>
+<p>如果是我们所期望的那个标题视图,那么现在Xcode的标题栏就被隐藏了,这就能证实它的确是我们所期望的标题栏的视图啦.</p>
+<p>通过如下命令来重新显示它:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) pro i&#10;(lldb) po [&#123;&#25214;&#21040;&#30340;IDEActivityView&#23454;&#20363;&#30340;&#22320;&#22336;&#125; setHidden:NO]  &#27604;&#22914;&#22312;&#25105;&#30340;&#26426;&#23376;&#19978;&#26159;  po [0x7fcc2686b3c0 setHidden:NO]&#10;(lldb) c</span><br></pre></td></tr></table></figure></p>
+<p>以下这个图是上述在LLDB中输入命令的gif动画,供你参考:<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_6.gif" alt="LLDB_setHidden.gif"></p>
+<p>按照以往的经验,你知道,当你Build或者Stop一个Xcode工程的时候,标题栏视图的内容将会变化.你可以用DTrace来观察相关的函数.<strong>IDEActivity</strong>前缀是一个独特的命名约定,你可以观察所有的以<strong>IDEActivity</strong>开头的类,以此来观察在这幕后的所有相联系的事情.</p>
+<p>回到终端,通过<strong>Control + C</strong>来停止DTrace,然后输入以下命令到终端中:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dtrace -qn &#39;objc$target:IDEActivity*::entry  &#123; printf(&#34;%c[%s %s]\n&#34;, probefunc[0], probemod, (string)&#38;probefunc[1]); @num[probemod] = count(); &#125;&#39; -p `pgrep -xn Xcode`</span><br></pre></td></tr></table></figure></p>
+<p>这段脚本将会输出所有类名前缀是<strong>IDEActivity</strong>的所有方法调用.一旦你停止这个脚本命令(Control+C),它还会输出指定类方法的被调用次数.</p>
+<p>yohunl备注: 当你输入这个命令的时候,可能会遇到译者遇到的这种情况<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yohunldeMacBook-Pro:~ yohunl$ sudo dtrace -qn &#39;objc$target:IDEActivity*::entry  &#123; printf(&#34;%c[%s %s]\n&#34;, probefunc[0], probemod, (string)&#38;probefunc[1]); @num[probemod] = count(); &#125;&#39; -p `pgrep -xn Xcode`&#10;dtrace: invalid probe specifier objc$target:IDEActivity*::entry  &#123; printf(&#34;%c[%s %s]\n&#34;, probefunc[0], probemod, (string)&#38;probefunc[1]); @num[probemod] = count(); &#125;: probe description objc50360:IDEActivity*::entry does not match any probes</span><br></pre></td></tr></table></figure></p>
+<p>当遇到这种情况不要担心,不要茫然,你只要完全退出Xcode,再重新启动Xcode,再输入这个命令就好了.</p>
+<p>开始这个DTrace命令,回到Xcode中,随便打开一个工程,编译并运行,然后再停止.注意观察Xcode的标题栏的内容变化,然后停止Dtrace命令,查看结果:<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_7.gif" alt="Dtrace_IDEActivity.gif"></p>
+<p>仔细分析上面输出的信息.<strong>IDEActivityView</strong>和其它类之间是怎么运转的都在控制台的输出信息中,但是也有大量的其它信息夹杂在其中(控制台的输出信息中),不是么?</p>
+<p>幸运的是,你可以有选择的限制展示给你的信息量.通过浏览相关的类,来确定是否有值得你进一步选择性探索的内容….,也许 <strong> IDEActivityReport* </strong> 就是一个不错的候选类,因为以它开头的类看起来就是有联系的(在我们上述的操作中,最后在DTrace看到的很多都是它,所以我们有理由觉得它就是有联系的).</p>
+<p>修改Dtrace脚本,使他看起来如下:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dtrace -qn &#39;objc$target:IDEActivityReport*::entry  &#123; printf(&#34;%c[%s %s]\n&#34;, probefunc[0], probemod, (string)&#38;probefunc[1]); @num[probemod] = count(); &#125;&#39; -p `pgrep -xn Xcode`</span><br></pre></td></tr></table></figure></p>
+<p>再运行,停止Xcode的动作的同时,密切关注控制台的输出信息.一旦停止Xcode,立马Control+C停止掉Dtrace的脚本,是否出现了一些类,看起来是值得我们进一步去探索的呢?</p>
+<p><strong>IDEActivityReportStringSegment</strong>看起来比较值得探索.缩小我们的脚本的搜索范围,聚焦到这个类上来,注意以下命令的变化,注意Probe的Function部分的变化(我们上面分析了Dtrace命令的组成,其中Probe部分有个Function组成部分)<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dtrace -qn &#39;objc$target:IDEActivityReportStringSegment::entry  &#123; printf(&#34;%c[%s %s]\n&#34;, probefunc[0], probemod, (string)&#38;probefunc[1]); @num[probefunc] = count(); &#125;&#39; -p `pgrep -xn Xcode`</span><br></pre></td></tr></table></figure></p>
+<p>通过编译,运行,停止Xcode工程;再一次停止Dtrace命令,观察<strong>IDEActivityReportStringSegment</strong>类的实例的方法各自被调用的次数(当Control+C停止命令后,在控制台会输出各个方法的调用次数).看起来,<code>initWithString:priority:frontSeparator:backSeparator:</code> 和 <code>initWithString:priority:</code>值得进一步分析!</p>
+<p>打开一个新的LLDB会话(打开一个终端标签页面,lldb进入LLDB),然后再运行如下命令:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) pro attach -n Xcode&#10;(lldb) rb &#39;IDEActivityReportStringSegment\ initWithString&#39;&#10;Breakpoint 9: 2 locations.&#10;(lldb) br command add&#10;Enter your debugger command(s).  Type &#39;DONE&#39; to end.&#10;&#62; po NSLog(@&#34;customidentifier %s %@&#34;, $rsi, $rdx) &#10;&#62; c &#10;&#62; DONE&#10;(lldb) c</span><br></pre></td></tr></table></figure></p>
+<p>在上面这段命令中,你添加了自定义的命令,当任何属于<strong>IDEActivityReportStringSegment</strong>类的以<strong>initWithString</strong>方法开头的方法被调用时,就会执行添加的自定义命令.它输出<strong>IDEActivityReportStringSegment</strong>实例的方法的 <strong>Selector</strong> 和 <strong>self</strong> (还记得教程一中提到的各个寄存器中存放的内容了吧)到控制台.</p>
+<p>另外,使用了<strong>customidentifier</strong> 来标识 NSLog的输出信息,这样你可以更容易的从控制台的输出中容易的定位到这些Log.</p>
+<p>回到终端,新建一个终端tab(使用快捷键<strong> ⌘ + t </strong> ),建立一个<strong>customidentifier</strong>的<strong>grep</strong>尾搜索:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f /var/log/system.log | grep customidentifier  #&#35793;&#32773;&#27880;,&#36825;&#21477;&#35805;&#36755;&#20837;&#21518;,&#24182;&#27809;&#26377;&#36755;&#20986;,&#24403;&#20320;&#20999;&#25442;&#21040;Xcode&#20013;,&#32534;&#35793;,&#36816;&#34892;,&#23601;&#20135;&#29983;&#36755;&#20986;&#20102;</span><br></pre></td></tr></table></figure></p>
+<p>编译,运行Xcode,以便让Xcode产生<strong>IDEActivityReportStringSegment</strong>变化.下面的gif动画,显示了上面所说的所有你输入到LLDB中的命令,看起来如下:<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_8.gif" alt="LLDB_String_Hunting.gif"></p>
+<p>比较控制台的输出和Xcode的标题栏的输出,你可以明确的得到:它就是你要寻找的内容!!</p>
+<h2 id="u4F7F_u7528Swizzle_u7684_u65F6_u5019_u4E86"><a href="#u4F7F_u7528Swizzle_u7684_u65F6_u5019_u4E86" class="headerlink" title="使用Swizzle的时候了"></a>使用Swizzle的时候了</h2><hr>
+<p>创建一个Objective-C的类NSObject的category,命名为<strong>Rayrolling IDEActivityReportStringSegment</strong><br>添加下面的代码到建立的文件 <strong>NSObject+Rayrolling_IDEActivityReportStringSegment.m:</strong>中:<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#import <span class="title">"NSObject+Rayrolling_IDEActivityReportStringSegment.h"</span></span></span><br><span class="line"><span class="preprocessor">#import <span class="title">"NSObject+MethodSwizzler.h"</span></span></span><br><span class="line"><span class="preprocessor">#import <span class="title">"Rayrolling.h"</span></span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> ()</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line">- (<span class="keyword">id</span>)initWithString:(<span class="keyword">id</span>)arg1 priority:(<span class="keyword">double</span>)arg2 frontSeparator:(<span class="keyword">id</span>)arg3 backSeparator:(<span class="keyword">id</span>)arg4;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span> (<span class="title">Rayrolling_IDEActivityReportStringSegment</span>)</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">+ (<span class="keyword">void</span>)load</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;</span><br><span class="line">  <span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;</span><br><span class="line">    [<span class="built_in">NSClassFromString</span>(<span class="string">@"IDEActivityReportStringSegment"</span>) swizzleWithOriginalSelector:<span class="keyword">@selector</span>(initWithString:priority:frontSeparator:backSeparator:) swizzledSelector:<span class="keyword">@selector</span>(Rayrolling_initWithString:priority:frontSeparator:backSeparator:) isClassMethod:<span class="literal">NO</span>];</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">- (<span class="keyword">id</span>)Rayrolling_initWithString:(<span class="built_in">NSString</span> *)string priority:(<span class="keyword">double</span>)priority frontSeparator:(<span class="keyword">id</span>)frontSeparator backSeparator:(<span class="keyword">id</span>)backSeparator</span><br><span class="line">&#123;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 3</span></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">NSArray</span> *lyrics;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 4</span></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">NSInteger</span> index = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 5</span></span><br><span class="line">  <span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;</span><br><span class="line">    lyrics = @[<span class="string">@"Never gonna live you up."</span>,</span><br><span class="line">               <span class="string">@"Never gonna set you down."</span>];</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">  &#125;);</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 6</span></span><br><span class="line">  index = index &gt;= lyrics<span class="variable">.count</span> -<span class="number">1</span> ? <span class="number">0</span> : index + <span class="number">1</span>;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 7</span></span><br><span class="line">  <span class="keyword">if</span>  ([Rayrolling isEnabled]) &#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> Rayrolling_initWithString:lyrics[index] priority:priority frontSeparator:frontSeparator backSeparator:backSeparator];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> [<span class="keyword">self</span> Rayrolling_initWithString:string priority:priority frontSeparator:frontSeparator backSeparator:backSeparator];</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>下面是对上面代码的一些解释:</p>
+<ol>
+<li>你需要前向声明私有类的初始化方法<strong>initWithString:priority:frontSeparator:backSeparator:</strong>,否则编译器直接就让你通过不了.</li>
+<li><strong>load</strong>是通常被用来初始化添加swizzle代码的地方.</li>
+<li>因为你使用一个category来交换方法,在category中建立实例变量是稍微有些复杂的.你可以通过<a href="http://nshipster.cn/associated-objects/" target="_blank" rel="external">associated objects</a>给一个已存在的类添加实例变量,但这个是你自己应该掌握的内容.在这里,我们直接使用一个<strong>static NSArray</strong>来保持一个对象继续存在,即使它所在的方法已经执行完毕了.</li>
+<li>您可以使用相同的<strong>static</strong>伎俩，使得<strong>index</strong>也如此。</li>
+<li>使用<strong>dispatch_once</strong>初始化歌词<strong>NSArray</strong></li>
+<li>递增<strong>index</strong>,如果越界了,就重置它</li>
+<li>检测插件是否是可用状态,如果是,那就更改string参数,否则,使用默认的参数</li>
+</ol>
+<p>正如你所看到的，使用正确的工具可以帮助你快速定位你想要的东西.然而,要达到这个目的,却有不止一种方法 - 你将会发现,通过堆(heap)分析照样可以定位到你所感兴趣的内容</p>
+<h2 id="u901A_u8FC7_u5806_28heap_29_u6765_u91CD_u65B0_u5BFB_u627EIDEActivityView"><a href="#u901A_u8FC7_u5806_28heap_29_u6765_u91CD_u65B0_u5BFB_u627EIDEActivityView" class="headerlink" title="通过堆(heap)来重新寻找IDEActivityView"></a>通过堆(heap)来重新寻找IDEActivityView</h2><hr>
+<p>在本节中,你将会重新搜寻Xcode的<strong>IDEActivityView</strong>和<strong>IDEActivityReportStringSegment</strong>,你将会使用一种略微不同的方式来达到这一目的.</p>
+<p>到目前为止,你都是通过自上而下的方式来进行定位的:你先找到一个可能的<strong>class</strong>,然后以某种方式在内存中寻找它的一个实例对象,再查找它的成员方法和属性.其实,以相反的方向来进行,似乎也是可行的,就是沿着参考链从下而上去寻找目标对象,直到找到它.</p>
+<p>很幸运,Xcode中附带了一些Python脚本,让你能够做到这点!</p>
+<p>结束掉终端中所有的已存在的LLDB和Dtrace的会话,然后重启Xcode.开始一个新的Xcode和LLDB会话,再一次执行LLDB附着到Xcode上的命令,然后,添加下面的命令脚本:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) pro at -n Xcode &#10;(lldb) command script import lldb.macosx.heap&#10;&#34;malloc_info&#34;, &#34;ptr_refs&#34;, &#34;cstr_refs&#34;, and &#34;objc_refs&#34; commands have been installed, use the &#34;--help&#34; options on these commands for detailed help.</span><br></pre></td></tr></table></figure></p>
+<p>这个脚本加载了一系列非常有用的方法到LLDB进程中.</p>
+<ul>
+<li><strong>malloc_info:</strong> 展示当前堆得对象的详细信息.尤其是结合<strong>MallocStackLogging</strong>环境变量的时候及其有用!</li>
+<li><strong>ptr_refs:</strong> 给它一个堆空间中的一个内存地址,它可以找到指向这个内存地址的其它对象.</li>
+<li><strong>cstr_refs:</strong> 参数类型是<strong>char * </strong> ,查找它在内存中出现的地方.</li>
+<li><strong>objc_refs:</strong> 找到内存中指定的类的实例</li>
+</ul>
+<p>你可能想先了解了解最容易的<strong>objc_refs</strong>.</p>
+<p>在LLDB中,通过以下脚本来找寻所有的<strong>IDEActivityView</strong>类的实例变量:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) objc_refs -o IDEActivityView&#10;Searching for all instances of classes or subclasses of &#34;IDEActivityView&#34; (isa=0x10fffe650)&#10;0x00007faaee9cbf30: malloc(   304) -&#62; 0x7faaee9cbf30 IDEActivityView.DVTLayerHostingView.NSView.NSResponder.NSObject.isa&#10;&#60;IDEActivityView: 0x7faaee9cbf30&#62;</span><br></pre></td></tr></table></figure></p>
+<p>这个脚本输出了内存中所有的<strong>IDEActivityView</strong>类的实例.其中的<strong> -o </strong>参数表示输出对象,也就是会调用对象的<strong> description </strong>方法</p>
+<p>通过这个简单地额脚本,你就可以在内存中找属于指定类的的实例对象.这招也适用于继承于该对象的子类.</p>
+<blockquote>
+<p>yohunl备注<br>很遗憾,在我电脑上,这句怎么都查询不到<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) objc_refs -o IDEActivityView&#10;error: libarclite_macosx.a(arclite.o) failed to load objfile for /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/arc/libarclite_macosx.a&#10;error: libarclite_macosx.a(arclite.o) failed to load objfile for /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/arc/libarclite_macosx.a&#10;Searching for all instances of classes or subclasses of &#34;IDEActivityView&#34; (isa=0x10ada9328)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>试了很多次,都没能得到所期望的东西,但我相信这个方法是可以的</p>
+<p>通过上一步 <strong>objc_refs</strong>发现的内存地址,你可以采用如下的脚本来展开一个<strong>IDEActivityView</strong>实例的成员变量:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) malloc_info -t 0x7faaee9cbf30&#10;0x00007faaee9cbf30: malloc(   304) -&#62; 0x7faaee9cbf30 IDEActivityView.DVTLayerHostingView.NSView.NSResponder.NSObject.isa (IDEActivityView) *addr = &#123;&#10;  DVTLayerHostingView = &#123;&#10;    NSView = &#123;&#10;      NSResponder = &#123;&#10;...</span><br></pre></td></tr></table></figure></p>
+<p>这还不是它能做到的全部!你甚至可以用它,通过指定的内存地址来获得其它对象的引用:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) ptr_refs  0x7faaee9cbf30&#10;0x00007faaeed9a308: malloc(    16) -&#62; 0x7faaeed9a300 + 8     &#10;0x00007faaeedb4148: malloc(   176) -&#62; 0x7faaeedb4140 + 8      IDEActivityViewBackgroundButton.NSButton.NSControl.NSView.NSResponder._nextResponder&#10;0x00007faaeedb4190: malloc(   176) -&#62; 0x7faaeedb4140 + 80     IDEActivityViewBackgroundButton.NSButton.NSControl._aux.NSObject.isa&#10;0x00007faaeedb4928: malloc(   160) -&#62; 0x7faaeedb4920 + 8      NSView.NSResponder._nextResponder&#10;...</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意:这些命令,如果结合 <strong> im loo -rn {classmethod regex} </strong> 方式来查询,甚至可以帮助你快速的定位到,并且探查到在内存中存活的该类的所有实例.当然了,尝试之前,请确定你的LLDB还是暂停状态,否则的话,这些命令是不会起作用的.</p>
+</blockquote>
+<p>你设置可以更进一步,有一个环境变量<strong>MallocStackLogging</strong>,它可以在你初始化任何一个对象的时候用于栈(stack)回溯.虽然很多引用都可以指向同一个对象,但是它可以指出来,哪个才是这个对象的”最终拥有者”.  这段还要再分析一下</p>
+<p>由于上文的LLDB已经附着(attach)在xcode上,所以你要先杀掉Xcode进程,再通过带上<strong>MallocStackLogging</strong>环境参数的LLDB来重启它:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) pro kill &#10;Process 65196 exited with status = 9 (0x00000009)&#10;(lldb) pro launch -v MallocStackLogging=1 -n&#10;Process 67920 launched: &#39;/Applications/Xcode.app/Contents/MacOS/Xcode&#39; (x86_64)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意:如果你比较懒,不断的杀掉LLDB/Xcode会话,<strong>launchctl</strong>是一个更加方便的启用环境变量<strong>MallocStackLogging</strong>的方式:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl setenv MallocStackLogging 1</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这个命令将通过<strong>launch</strong>创建的每一个进程的<strong>MallocStackLogging</strong>都设置成了<strong>true</strong>.所以你要记得,通过如下的命令来移除它们:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">launchctl unsetenv MallocStackLogging</span><br></pre></td></tr></table></figure></p>
+<p>为了测试上面的内容,首先,确保你的Xcode的<strong>Edit</strong>菜单下的菜单项是 如下图所示的 Enable Rayrolling :<br><img src="http://7xqspl.com1.z0.glb.clouddn.com/createxcodeplugin2_9.png" alt="Enable_RayRolling-700x378.png"></p>
+<p>现在,打开任何一个Xcode工程,保证源码编辑窗口是打开的,编译,运行工程.伴随着工程的运行,你将会看到在编译完成和运行完成的时候,<strong>IDEActivityView</strong>(假装你不知道此时此刻,谁调用它)改变它的内容.</p>
+<p>暂停执行这个Xcode工程,如果需要,使用下面的命令来重新加载LLDB的heap(堆)方法集:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) pro i &#10;(lldb) command script import lldb.macosx.heap&#10;&#34;malloc_info&#34;, &#34;ptr_refs&#34;, &#34;cstr_refs&#34;, and &#34;objc_refs&#34; commands have been installed, use the &#34;--help&#34; options on these commands for detailed help.</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>提醒:如果你对多次输入这个命令感到厌烦,你可以去网上了解下怎么在<strong> ~/.lldbinit </strong>方法中建立 <strong>command aliases </strong>(命令的别名,或者缩写).这个在<strong> ~/.lldbinit </strong>文件的内容,在每次创建一个LLDB的会话实例的时候,都会被加载.</p>
+</blockquote>
+<p>现在,使用<strong>cstr_ref</strong>方法,给它传递Xcode标题栏的字符串内容.举个例子,如果这个工程的名字叫<strong>Rayrolling</strong>,那么你的Xcode的标题栏上显示的应该是诸如:”Running Rayrolling : Rayrolling:”此类的字符串:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) cstr_ref &#34;Running Rayrolling : Rayrolling&#34; &#10;0x0000000118cb21d0: malloc(    32) -&#62; 0x118cb21d0&#10;0x000000012079ae21: malloc(    48) -&#62; 0x12079ae10 + 17     __NSCFString1 bytes after __NSCFString&#10;0x00000001207a3bb3: malloc(    64) -&#62; 0x1207a3b90 + 35     __NSCFString19 bytes after __NSCFString&#10;0x00000001223834d1: malloc(    48) -&#62; 0x1223834c0 + 17     __NSCFString1 bytes after __NSCFString&#10;0x000000011f9126a1: malloc(    48) -&#62; 0x11f912690 + 17     __NSCFString1 bytes after __NSCFString</span><br></pre></td></tr></table></figure></p>
+<p>正如你所看到的那样,主要的参考信息一般都是 <strong>NSString</strong>类型的参考,多数情况下,你并不能从字符串本身得到更多的信息.所以你可能想了解这样字符串是怎样被创建的?因为有<strong>MallocStackLogging</strong>,做到这点,相当容易!<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) cstr_ref &#34;Running Rayrolling : Rayrolling&#34;  -s</span><br></pre></td></tr></table></figure></p>
+<p>这个脚本输出堆栈帧的信息,当这个<strong>char * </strong>被创建的时候.</p>
+<p>通过所有的堆栈信息去跟踪实例变量,由于他们都是在内存中,内存地址的数量和其在内存中的相对位置都有可能不同,这些都取决于你和Xcode的互动方式的不同而不同.</p>
+<p>通过阅读分析堆栈的跟踪信息,你将会获得一组类,这些类就是负责Xcode中这方面的.</p>
+<p>举例来说,取决于你运行的这些LLDB查询命令,你可能会看到这些class,如:<strong> IDEActivityScrollingTextLayer </strong> ,<strong> IDERunOperation </strong> ,<strong> IDEActivityView </strong> 等等诸如此类的class.</p>
+<p>你还可以使用<strong> ptr_ref </strong>来作用于 <strong> cstr_ref </strong>输出的信息,来看那些对象保留了这个string对象的引用.</p>
+<h2 id="u7E41_u6742_u7684_u968F_u673A_u63A2_u7D22_u6280_u5DE7"><a href="#u7E41_u6742_u7684_u968F_u673A_u63A2_u7D22_u6280_u5DE7" class="headerlink" title="繁杂的随机探索技巧"></a>繁杂的随机探索技巧</h2><hr>
+<p>在Xcode中寻找正确的api是很复杂的,因为你是想在成千上万的类和方法中寻找符合条件的几个类而已.</p>
+<p>使用LLDB的正则表达式,可以帮助你更好的找到它们.某些时候,最好的获取信息的地方是代码中使用的单例(Singleton),查看Xcode中存在的单例,看看是否值得进一步深入的单例.<br>当LLDB附着到Xcode,并且处于暂停状态时候,输入以下命令:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) i loo -rn &#34;\+\[IDE.*\ shared&#34;</span><br></pre></td></tr></table></figure></p>
+<p>这条命令将会查找以IDE开头的类名,并且以”shared”开头的类方法.这条命令等价于 <code>target modules lookup -rn &quot;\+\[IDE.*\ shared&quot;</code>,-r是指后面的是正则表达式</p>
+<p>另外一个吸引力的替代方案是:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) i loo -rn &#34;\+\[[A-Za-z]*\ [A-Za-z]*\]&#34;</span><br></pre></td></tr></table></figure></p>
+<p>它将会输出所有的没有参数的类方法.</p>
+<p>正如你前面看到的,你可以很容易的找出你刚兴趣的类,通过给一个名字给上面提到的Python脚本,就可以搜索到.另外还有一个流行的工具,可以用来搜索类和类方法,这个工具的名字叫class-dump,它可以在 <a href="http://stevenygard.com/projects/class-dump/" target="_blank" rel="external">这里下载</a>.它是LLDB命令<strong>im loo -rn {regex} </strong>的另一种替代方式,因为它(Class-dump)可以输出更加整洁,清晰的头文件形式的输出.</p>
+<p>当然了,class-dump也有小缺点,它的缺点就是你必须限制你的搜索在指定的framework或者plugin中,而LLDB的image lookup 命令搜索的是整个的Xcode进程中的framework和plugin!也就是image lookup的搜索范围更大,更广.</p>
+<h2 id="u4E0B_u4E00_u6B65_u8BE5_u505A_u4EC0_u4E48_3F"><a href="#u4E0B_u4E00_u6B65_u8BE5_u505A_u4EC0_u4E48_3F" class="headerlink" title="下一步该做什么?"></a>下一步该做什么?</h2><hr>
+<p>这里是<a href="http://www.raywenderlich.com/wp-content/uploads/2015/05/Rayrolling_Part2_Final.zip" target="_blank" rel="external">第二部分最后完成的domo工程</a>.<br>在这个教程中,你学习到了最基本的DTrace技能,并且学习和使用了一些你可以得到的高级LLDB方法.<br>如果你想了解更多的关于DTrace的知识,你可以阅读另一篇<a href="http://www.objc.io/issue-19/dtrace.html" target="_blank" rel="external">obcj.io</a>上的优秀文章,还有就是官方的 <a href="http://www.oracle.com/technetwork/server-storage/solaris/dtrace-tutorial-142317.html" target="_blank" rel="external">DTrace文档</a></p>
+<p>在本系列教程的第三部分,我们将再一次关注 汇编,你将会学到另一种灵巧的工具,它的名字叫 <a href="http://www.cycript.org/" target="_blank" rel="external">Cycript</a>.</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/03/12/createXcodePlugin2-3/">怎样创建一个xcode插件 第2部分/3部分</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Yohunl 的个人博客">Yohunl</a></p>
+        <p><span>发布时间:</span>2016年03月12日 - 11时28分</p>
+        <p><span>最后更新:</span>2016年03月12日 - 12时57分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/03/12/createXcodePlugin2-3/" title="怎样创建一个xcode插件 第2部分/3部分">http://yoursite.com/2016/03/12/createXcodePlugin2-3/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/03/12/createXcodePlugin2-3/　　作者: Yohunl" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/03/07/createXcodePlugin1-3/">
+                    怎样创建一个xcode插件 第一部分/3部分
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u5F00_u59CB_u5566"><span class="toc-number">1.</span> <span class="toc-text">开始啦</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LLDB_u7684BFF_u548CDTrace"><span class="toc-number">2.</span> <span class="toc-text">LLDB的BFF和DTrace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u4F7F_u7528Swizzle_u7684_u65F6_u5019_u4E86"><span class="toc-number">3.</span> <span class="toc-text">使用Swizzle的时候了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u901A_u8FC7_u5806_28heap_29_u6765_u91CD_u65B0_u5BFB_u627EIDEActivityView"><span class="toc-number">4.</span> <span class="toc-text">通过堆(heap)来重新寻找IDEActivityView</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7E41_u6742_u7684_u968F_u673A_u63A2_u7D22_u6280_u5DE7"><span class="toc-number">5.</span> <span class="toc-text">繁杂的随机探索技巧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u4E0B_u4E00_u6B65_u8BE5_u505A_u4EC0_u4E48_3F"><span class="toc-number">6.</span> <span class="toc-text">下一步该做什么?</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
+
+
+    <div class="share">
+    <div class="bdsharebuttonbox">
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+    <a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+    <a href="#" class="bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+    </div>
+    <script>
+        window._bd_share_config={
+            "common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    </script>
+</div>
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/03/12/createXcodePlugin2-3/" data-title="怎样创建一个xcode插件 第2部分/3部分" data-url="http://yoursite.com/2016/03/12/createXcodePlugin2-3/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yohunl"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/03/07/createXcodePlugin1-3/" title="下一篇: 怎样创建一个xcode插件 第一部分/3部分">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/03/12/createXcodePlugin2-3/">怎样创建一个xcode插件 第2部分/3部分</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/createXcodePlugin1-3/">怎样创建一个xcode插件 第一部分/3部分</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/01/iOS中的正则表达式/">iOS中的正则表达式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/01/xcode7-插件制作入门/">xcode7 插件制作入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/06/在github上搭建hexo静态博客/">在github上搭建hexo静态博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/06/NSTimer和实现弱引用的timer的方式/">NSTimer和实现弱引用的timer的方式</a></li></ul>
+    <script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#toc, .switch-btn, .switch-area").toggle();
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+                $(".switch-btn, .switch-area").fadeToggle(300);
+            }
+        })
+    </script>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2016 Yohunl
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的静态博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减双栏 Hexo 博客主题">Yelee</a> by MOxFIVE
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >本站到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
